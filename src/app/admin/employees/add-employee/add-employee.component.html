@@ -1,0 +1,176 @@
+<section class="content">
+  <div class="content-block">
+    <div class="block-header">
+      <!-- breadcrumb -->
+      <app-breadcrumb [title]="'Add Employee'" [items]="['Employees']" [active_item]="'Add Employee'">
+      </app-breadcrumb>
+    </div>
+    <div class="row clearfix">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h2>Ajouter Des Employés</h2>
+          </div>
+          <div class="body">
+            <form class="m-4" [formGroup]="docForm" (ngSubmit)="onSubmit()">
+              <!-- ID (peut être caché si généré automatiquement) -->
+           
+              <!-- Nom et Prénom -->
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Nom</mat-label>
+                    <input matInput formControlName="nom" required>
+                    @if (docForm.get('nom')?.hasError('required')) {
+                    <mat-error>
+                      Le nom est requis
+                    </mat-error>
+                    }
+                    @if (docForm.get('nom')?.hasError('pattern')) {
+                    <mat-error>
+                      Le nom ne doit contenir que des lettres
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Prénom</mat-label>
+                    <input matInput formControlName="prenom" required>
+                    @if (docForm.get('prenom')?.hasError('required')) {
+                    <mat-error>
+                      Le prénom est requis
+                    </mat-error>
+                    }
+                    @if (docForm.get('prenom')?.hasError('pattern')) {
+                    <mat-error>
+                      Le prénom ne doit contenir que des lettres
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Titre et Téléphone -->
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Titre</mat-label>
+                    <input matInput formControlName="titre" placeholder="Ex: Développeur Senior">
+                  </mat-form-field>
+
+                    @if (docForm.get('titre')?.hasError('required')) {
+                    <mat-error>
+                      Le titre est requis
+                    </mat-error>
+                    }
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Téléphone</mat-label>
+                    <input matInput formControlName="telephone" type="tel" required>
+                    @if (docForm.get('telephone')?.hasError('required')) {
+                    <mat-error>
+                      Le numéro de téléphone est requis
+                    </mat-error>
+                    }
+                    @if (docForm.get('telephone')?.hasError('pattern')) {
+                    <mat-error>
+                      Le numéro de téléphone ne doit contenir que des chiffres
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Email et Département -->
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" type="email" required>
+                    @if (docForm.get('email')?.hasError('required')) {
+                    <mat-error>
+                      L'email est requis
+                    </mat-error>
+                    }
+                    @if (docForm.get('email')?.hasError('email')) {
+                    <mat-error>
+                      Veuillez entrer une adresse email valide
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Département</mat-label>
+                    <mat-select formControlName="departement" required>
+                        <mat-option *ngFor="let dept of dataSource.data" [value]="dept.id">
+                          {{ dept.nom }}
+                        </mat-option>
+              
+                    </mat-select>
+                    @if (docForm.get('departement')?.hasError('required')) {
+                    <mat-error>
+                      Veuillez sélectionner un département
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+              </div>
+
+
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Mot de passe</mat-label>
+                    <input matInput formControlName="password" type="password" required>
+                    @if (docForm.get('password')?.hasError('required')) {
+                    <mat-error>
+                      Le mot de passe est requis
+                    </mat-error>
+                    }
+                    @if (docForm.get('password')?.hasError('password')) {
+                    <mat-error>
+                      Veuillez entrer un mot de passe d'au moins 12 caractères
+                    </mat-error>
+                    }
+                  </mat-form-field>
+                </div>
+               <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-3">
+                  <mat-form-field class="example-full-width mb-3" appearance="outline">
+                    <mat-label>Confirmer le mot de passe</mat-label>
+                    <input matInput formControlName="confirm" type="password" required>
+                    @if (docForm.get('confirm')?.hasError('required')) {
+                    <mat-error>
+                      La confirmation du mot de passe est requise
+                    </mat-error>
+                    }
+
+                    <mat-error *ngIf="docForm.hasError('mismatch')">
+                       Vos mots de passe sont différents
+                     </mat-error>
+
+                  
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <!-- Boutons d'action -->
+              <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-3">
+                  <button class="btn-space" [disabled]="!docForm.valid" mat-flat-button color="accent">
+                    Enregistrer
+                  </button>
+                  <button type="button" mat-flat-button class="formCancelBtn">
+                    Annuler
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

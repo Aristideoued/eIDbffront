@@ -1,0 +1,307 @@
+{
+  "routes": [
+ 
+    {
+      "path": "",
+      "title": "MENUITEMS.DASHBOARD.TEXT",
+      "iconType": "feather",
+      "icon": "monitor",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/dashboard/main",
+          "title": "MENUITEMS.DASHBOARD.LIST.DASHBOARD2",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+        
+      ]
+    },
+   
+    {
+      "path": "",
+      "title": "MENUITEMS.EMPLOYEES.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        
+        {
+          "path": "/admin/employees/allEmployees",
+          "title": "MENUITEMS.EMPLOYEES.LIST.ALL-EMPLOYEE",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      
+      ]
+    },
+     {
+      "path": "",
+      "title": "MENUITEMS.ADMIN.TEXT",
+      "iconType": "feather",
+      "icon": "users",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/admin/all-admin",
+          "title": "MENUITEMS.ADMIN.LIST.ALL-ADMIN",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+      ]
+    },
+
+     {
+      "path": "",
+      "title": "MENUITEMS.EMPLOYEES.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/employees/allEmployees",
+          "title": "MENUITEMS.EMPLOYEES.LIST.ALL-EMPLOYEE",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": ["Admin"],
+          "submenu": []
+        }
+      ]
+    },
+    
+    
+    {
+      "path": "",
+      "title": "MENUITEMS.HOLIDAYS.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/holidays/all-holidays",
+          "title": "MENUITEMS.HOLIDAYS.LIST.ALL-HOLIDAYS",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": ["Admin"],
+          "submenu": []
+        }
+      ]
+    },
+    
+    {
+      "path": "",
+      "title": "MENUITEMS.PAYROLL.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/payroll/employee-salary",
+          "title": "MENUITEMS.PAYROLL.LIST.EMPLOYEE_SALARY",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+       
+      ]
+    },
+
+    {
+      "path": "",
+      "title": "MENUITEMS.API.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/api/all-api",
+          "title": "MENUITEMS.API.LIST.API",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+       
+      ]
+    },
+
+   
+ 
+   
+
+ 
+  
+  
+ 
+    {
+      "path": "/client/dashboard",
+      "title": "MENUITEMS.CLIENT.DASHBOARD",
+      "iconType": "feather",
+      "icon": "airplay",
+      "class": "",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Client"],
+      "submenu": []
+    },
+    {
+      "path": "",
+      "title": "MENUITEMS.CLIENT.PROJECTS.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Client"],
+      "submenu": [
+        {
+          "path": "/client/projects/myProjects",
+          "title": "MENUITEMS.CLIENT.PROJECTS.LIST.MY-PROJECTS",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+       
+      ]
+    },
+     {
+      "path": "",
+      "title": "MENUITEMS.CLIENT.TRANSACTIONS.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Client"],
+      "submenu": [
+        {
+          "path": "/client/transactions",
+          "title": "MENUITEMS.CLIENT.TRANSACTIONS.LIST.TRANSACTIONS",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+       
+      ]
+    },
+
+     {
+      "path": "",
+      "title": "MENUITEMS.CLIENT.PAYOUTS.TEXT",
+      "iconType": "feather",
+      "icon": "package",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Client"],
+      "submenu": [
+        {
+          "path": "/client/payouts",
+          "title": "MENUITEMS.CLIENT.PAYOUTS.LIST.PAYOUTS",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": [""],
+          "submenu": []
+        }
+       
+      ]
+    }
+    
+
+  
+ 
+
+
+  
+  
+
+    
+    
+    
+  
+    
+    
+    
+  ]
+}
