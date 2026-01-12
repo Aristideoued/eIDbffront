@@ -82,7 +82,7 @@ export class SigninComponent
   }
 
 
-  onSubmit(){
+ /* onSubmitOld(){
     if(this.adminMode){
       this.onSubmitAdmin()
     }
@@ -91,11 +91,11 @@ export class SigninComponent
     }
     /*else if(this.employeMode){
       this.onSubmitEmploye()
-    }*/
+    }
    
-  }
+  }*/
 
-  onSubmitAdmin() {
+  onSubmit() {
     this.submitted = true;
     this.loading = true;
     this.error = '';

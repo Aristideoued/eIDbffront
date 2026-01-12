@@ -9,7 +9,6 @@ import {
 import { Component, Inject } from '@angular/core';
 import { EmployeesService } from '../../employees.service';
 import { MatButtonModule } from '@angular/material/button';
-import { Plateforme } from '../../employees.model';
 
 export interface DialogData {
   id: string;
@@ -43,7 +42,7 @@ export class AllEmployeesDeleteComponent {
   confirmDelete(): void {
    
 
-    this.employeesService.deletePlateforme(this.data.id).subscribe({
+    this.employeesService.deletePersonne(this.data.id).subscribe({
       next: (response) => {
         // console.log('Delete Response:', response);
         this.dialogRef.close(response); // Close with the response data

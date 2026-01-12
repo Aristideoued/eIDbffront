@@ -2,7 +2,7 @@
   <div class="content-block">
     <div class="block-header">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="'Toutes les plateformes'" [items]="['Plateforme']" [active_item]="'Toutes les plateformes'">
+      <app-breadcrumb [title]="'Les citoyens'" [items]="['Citoyens']" [active_item]="'Les citoyens'">
       </app-breadcrumb>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div class="left">
               <ul class="header-buttons-left ms-0">
                 <li class="tbl-title">
-                  <h2>Plateformes</h2>
+                  <h2>Citoyens</h2>
                 </li>
                 <li class="tbl-search-box">
                   <label for="search-input"><i class="material-icons search-icon">rechercher</i></label>
@@ -232,10 +232,11 @@
                 <ng-container matColumnDef="actions">
                   <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
                   <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
-                    <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="sendMail(row)"
-                      class="tbl-action-btn" matTooltip="Envoyer les paramètres">
-                      <app-feather-icons style="color: green;" [icon]="'send'" [class]="'tbl-fav-send'"></app-feather-icons>
-                    </button>
+                  <button mat-icon-button color="accent" (click)="$event.stopPropagation(); openPhotoModal(row)"
+        class="tbl-action-btn" matTooltip="Changer la photo">
+  <mat-icon>camera_alt</mat-icon>
+</button>
+
                     <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="editCall(row)"
                       class="tbl-action-btn" matTooltip="Modifier">
                       <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>

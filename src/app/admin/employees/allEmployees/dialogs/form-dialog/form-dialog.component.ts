@@ -14,7 +14,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Plateforme } from '../../employees.model';
 import { CommonModule, formatDate } from '@angular/common';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -27,11 +26,13 @@ import { Department } from 'app/admin/departments/all-departments/department.mod
 import { MatTableDataSource } from '@angular/material/table';
 import { AdminService } from 'app/admin/admin/all-admin/admin.service';
 import { Admin } from 'app/admin/admin/all-admin/admin.model';
+import { Personne } from '../../employees.model';
+import { environment } from 'environments/environment.development';
 
 export interface DialogData {
   id: number;
   action: string;
-  employees: Plateforme;
+  employees: Personne;
 }
 
 @Component({
@@ -56,7 +57,8 @@ export class AllEmployeesFormComponent {
   action: string;
   dialogTitle: string;
   employeesForm: UntypedFormGroup;
-  employees: Plateforme;
+  personnes: Personne;
+  photo:string='';
 
   genres:any[]=[{"id":1,"libelle":"Femme"},{"id":2,"libelle":"Homme"}]
 
@@ -78,17 +80,52 @@ export class AllEmployeesFormComponent {
     this.action = data.action;
     this.dialogTitle =
       this.action === 'edit'
-        ? `Edit Plateforme: ${data.employees.nom}`
-        : 'Nouvelle Plateforme';
-    this.employees =
-      this.action === 'edit' ? data.employees : new Plateforme({} as Plateforme);
+        ? `Modification de : ${data.employees.nom} ${data.employees.prenom}`
+        : 'Nouvel ajout';
+    this.personnes =
+      this.action === 'edit' ? data.employees : new Personne({} as Personne);
+      this.photo=environment.apiUrl+"personnes/photo/"+this.personnes.iu
+        this.checkImage(this.photo)
+      .then(() => this.photo = this.photo)
+      .catch(() => this.photo = 'assets/images/avatar.jpg');
     this.employeesForm = this.createEmployeeForm();
   }
 
-   ngOnInit() {
+
+
+  checkImage(url: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve();
+    img.onerror = () => reject();
+  });
+}
+
+  uploadPhoto(event: Event) {
+  const input = event.target as HTMLInputElement;
+  if (!input.files || input.files.length === 0) return;
+
+  const file = input.files[0];
+  const formData = new FormData();
+  formData.append('file', file);
+
+  // On suppose que adminService a une méthode uploadPhoto(personneId, formData)
+  this.employeesService.uploadPhoto(this.personnes.iu, formData).subscribe({
+    next: (res: any) => {
+      console.log('Photo uploadée avec succès', res);
+      // Met à jour l'URL de la photo pour l'affichage immédiat
+      this.personnes.photo = res.photoUrl; // renvoyé par ton backend
+    },
+    error: (err) => console.error('Erreur upload photo:', err)
+  });
+}
+
+
+  /* ngOnInit() {
    
-    this.loadUsers();
-  }
+    //this.loadUsers();
+  }*/
 
   // Create form group for employee details
   createEmployeeForm(): UntypedFormGroup {
@@ -96,20 +133,23 @@ export class AllEmployeesFormComponent {
     console.log("le departement id=======> ",this.dataSource.data)
     
     return this.fb.group({
-      id: [this.employees.id],
-      nom: [this.employees.nom],
-      url: [this.employees.url, [Validators.required]],
-      callbackUrl: [this.employees.callbackUrl, [Validators.required]],
-      userId: [this.employees.userId, [Validators.required]],
-     /* birthDate: [
-        formatDate(this.employees.birthDate, 'yyyy-MM-dd', 'en'),
+      id: [this.personnes.id],
+      nom: [this.personnes.nom],
+      prenom: [this.personnes.prenom, [Validators.required]],
+      telephone: [this.personnes.telephone ],
+      adresse: [this.personnes.adresse],
+      etat: [this.personnes.etat],
+      dateNaissance: [
+        this.personnes.dateNaissance,
         [Validators.required],
-      ],*/
-     // role: [this.employees.role, [Validators.required]],
-      commissionAgregateur: [this.employees.commissionAgregateur, [Validators.required]],
+      ],
+      nationalite: [this.personnes.nationalite, [Validators.required]],
+      sexe: [this.personnes.sexe, [Validators.required]],
+      lieuNaissance: [this.personnes.lieuNaissance, [Validators.required]],
+
 
      
-      token: [this.employees.token|| '']
+      email: [this.personnes.email|| '',[Validators.email]]
     
     });
   }
@@ -135,39 +175,6 @@ export class AllEmployeesFormComponent {
     }
 
 
- /* createEmployeeForm(): UntypedFormGroup {
-  return this.fb.group({
-    id: [this.employees.id],
-    img: [this.employees.img],
-    name: [this.employees.name || this.employees.nomComplet, [Validators.required]],
-    email: [this.employees.email, [Validators.required, Validators.email]],
-    birthDate: [
-      this.employees.birthDate
-        ? formatDate(this.employees.birthDate, 'yyyy-MM-dd', 'en')
-        : '',
-      [Validators.required],
-    ],
-    role: [this.employees.role || this.employees.titre, [Validators.required]],
-    mobile: [this.employees.mobile || this.employees.telephone, [Validators.required]],
-    department: [this.employees.department || this.employees.departement, [Validators.required]],
-    degree: [this.employees.degree],
-    gender: [this.employees.gender],
-    address: [this.employees.address],
-    joiningDate: [
-      this.employees.joiningDate
-        ? formatDate(this.employees.joiningDate, 'yyyy-MM-dd', 'en')
-        : '',
-    ],
-    salary: [this.employees.salary, [Validators.required]],
-    lastPromotionDate: [
-      this.employees.lastPromotionDate
-        ? formatDate(this.employees.lastPromotionDate, 'yyyy-MM-dd', 'en')
-        : '',
-    ],
-    employeeStatus: [this.employees.employeeStatus || this.employees.statut],
-    workLocation: [this.employees.workLocation],
-  });
-}*/
 
 
   // Dynamic error message retrieval
@@ -188,7 +195,7 @@ export class AllEmployeesFormComponent {
     if (this.employeesForm.valid) {
       const employeeData = this.employeesForm.getRawValue();
       if (this.action === 'edit') {
-        this.employeesService.updatePlateforme(employeeData).subscribe({
+        this.employeesService.updatePersonne(employeeData).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },
@@ -198,7 +205,7 @@ export class AllEmployeesFormComponent {
           },
         });
       } else {
-        this.employeesService.addPlateforme(employeeData).subscribe({
+        this.employeesService.addPersonne(employeeData).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },

@@ -178,7 +178,7 @@ export class Dashboard2Component implements OnInit {
   }
 
     loadData() {
-      this.employeesService.getPlateforme().subscribe({
+      this.employeesService.getCitoyen().subscribe({
         next: (data:any) => {
           
           this.leaveRequestData= data.content;

@@ -161,7 +161,7 @@ action: any;
 
 
     loadEmployeData() {
-      this.employeService.getPlateforme().subscribe({
+      this.employeService.getCitoyen().subscribe({
         next: (data:any) => {
           
           this.employes = data.contenu;

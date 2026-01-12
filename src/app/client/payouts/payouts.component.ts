@@ -136,7 +136,7 @@ export class PayoutsComponent implements OnInit, OnDestroy{
     this.loadPlateforme();
   }
   loadPlateforme() {
-     this.employeesService.getPlateformeByUserId().subscribe({
+     this.employeesService.getPersonneByUserId().subscribe({
        next: (data:any) => {
          this.plateformes = data;
          
@@ -187,7 +187,7 @@ export class PayoutsComponent implements OnInit, OnDestroy{
   }
 
   loadData(idPlateforme:string) {
-    this.employeeSalaryService.getAllPayoutByPlateforme(idPlateforme).subscribe({
+    this.employeeSalaryService.getAllPayoutByPersonne(idPlateforme).subscribe({
       next: (data:any) => {
         this.dataSource.data = data.payouts;
         this.totalHT=data.totalMontantPayouts

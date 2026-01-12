@@ -10,7 +10,6 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { Plateforme } from './employees.model';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -37,6 +36,8 @@ import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.co
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Personne } from './employees.model';
+import { PhotoUploadModalComponent } from './dialogs/photo/photo.component';
 
 
 @Component({
@@ -67,30 +68,26 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
   columnDefinitions = [
     { def: 'select', label: 'Checkbox', type: 'check', visible: true },
     { def: 'id', label: 'ID', type: 'text', visible: false },
-    { def: 'userId', label: 'USERID', type: 'text', visible: false },
-        { def: 'token', label: 'Token', type: 'text', visible: false },
+    { def: 'iu', label: 'Identifiant WURI', type: 'text', visible: true },
+     //   { def: 'token', label: 'Token', type: 'text', visible: false },
 
     { def: 'nom', label: 'Nom', type: 'text', visible: true },
-    { def: 'totalMontantTransactions', label: 'Total transactions (HT)', type: 'text', visible: true },
-    { def: 'totalMontantTransactionsTTC', label: 'Total transactions (TTC)', type: 'text', visible: true },
-    { def: 'totalMontantPayouts', label: 'Total paiement (HT)', type: 'text', visible: true },
+    { def: 'prenom', label: 'Prénom', type: 'text', visible: true },
+    { def: 'sexe', label: 'Genre', type: 'text', visible: true },
+     { def: 'email', label: 'Email', type: 'email', visible: true },
+    { def: 'telephone', label: 'Téléphone', type: 'phone', visible: true },
+
+    { def: 'dateNaissance', label: 'Date de naissance', type: 'date', visible: true },
     
-    { def: 'totalMontantPayoutsTTC', label: 'Total paiement (TTC)', type: 'text', visible: true },
-
-
-
-    { def: 'url', label: 'Url', type: 'url', visible: true },
-        { def: 'callbackUrl', label: 'Url de retour', type: 'url', visible: true },
-
-     { def: 'commissionAgregateur', label: 'CommissionAgregateur', type: 'name', visible: true },
-     { def: 'userNomPrenom', label: 'Administrateur', type: 'text', visible: true },
-    { def: 'userTelephone', label: 'Téléphone Administrateur', type: 'phone', visible: true },
-    { def: 'userMail', label: 'Email Administrateur', type: 'email', visible: true },
+    { def: 'lieuNaissance', label: 'Lieu de naissance', type: 'text', visible: true },
+     { def: 'nationalite', label: 'Nationalité', type: 'text', visible: true },
+     { def: 'adresse', label: 'Adresse', type: 'text', visible: true },
+    { def: 'etat', label: 'Etat', type: 'maps', visible: true },
     { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
   avatar="assets/images/avatar.jpg"
-  dataSource = new MatTableDataSource<Plateforme>([]);
-  selection = new SelectionModel<Plateforme>(true, []);
+  dataSource = new MatTableDataSource<Personne>([]);
+  selection = new SelectionModel<Personne>(true, []);
   contextMenuPosition = { x: '0px', y: '0px' };
   isLoading = true;
   private destroy$ = new Subject<void>();
@@ -127,15 +124,15 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    this.employeesService.getPlateforme().subscribe({
+    this.employeesService.getCitoyen().subscribe({
       next: (data:any) => {
         
-        this.dataSource.data = data.content;
-        console.log("Les plateformes====> ", this.dataSource.data)
+        this.dataSource.data = data;
+        console.log("Les citoyens====> ", this.dataSource.data)
         this.isLoading = false;
         this.refreshTable();
-        this.dataSource.filterPredicate = (data: Plateforme, filter: string) => {
-          const searchStr = `${data.id} ${data.url} ${data.nom} ${data.userNomPrenom} ${data.userTelephone} ${data.userMail} ${data.commissionAgregateur}`.toLowerCase();
+        this.dataSource.filterPredicate = (data: Personne, filter: string) => {
+          const searchStr = `${data.id} ${data.iu} ${data.nom} ${data.prenom} ${data.telephone} ${data.email} ${data.adresse}`.toLowerCase();
           return searchStr.includes(filter);
         };
       },
@@ -210,11 +207,11 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
   }
 } */
 
-  editCall(row: Plateforme) {
+  editCall(row: Personne) {
     this.openDialog('edit', row);
   }
 
-  openDialog(action: 'add' | 'edit', data?: Plateforme) {
+  openDialog(action: 'add' | 'edit', data?: Personne) {
     let varDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       varDirection = 'rtl';
@@ -229,7 +226,7 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
       autoFocus: false,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+   /* dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (action === 'add') {
           this.dataSource.data = [result, ...this.dataSource.data];
@@ -244,10 +241,23 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
           'center'
         );
       }
-    });
+    });*/
+
+     dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Le modal a renvoyé une réponse (nouveau ou modifié)
+     this.loadData();
+        this.showNotification(
+          action === 'add' ? 'snackbar-success' : 'black',
+          `${action === 'add' ? 'Ajout' : 'Modification'} effectué(e) avec succès !`,
+          'bottom',
+          'center'
+        );
+    }
+  });
   }
 
-  private updateRecord(updatedRecord: Plateforme) {
+  private updateRecord(updatedRecord: Personne) {
     const index = this.dataSource.data.findIndex(
       (record) => record.id === updatedRecord.id
     );
@@ -257,7 +267,7 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteItem(row: Plateforme) {
+  deleteItem(row: Personne) {
     const dialogRef = this.dialog.open(AllEmployeesDeleteComponent, {
       data: row,
     });
@@ -277,6 +287,23 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
     });
   }
 
+
+
+  openPhotoModal(row: Personne) {
+  const dialogRef = this.dialog.open(PhotoUploadModalComponent, {
+    width: '400px',
+    data: { iu: row.iu}
+  });
+
+  dialogRef.afterClosed().subscribe((newPhotoUrl: string) => {
+    if (newPhotoUrl) {
+      // Met à jour la photo dans le formulaire
+     // this.personnes.photo = newPhotoUrl;
+     this.loadData()
+    }
+  });
+}
+
   showNotification(
     colorName: string,
     text: string,
@@ -294,16 +321,16 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
   exportExcel() {
     const exportData = this.dataSource.filteredData.map((x) => ({
       ID: x.id,
-      Url: x.url,
       Nom: x.nom,
-      Admin: x.userNomPrenom,
-      'Téléphone Admin': x.userTelephone,
-      "Email admin": x.userMail,
-      CommissionAgreagateur: x.commissionAgregateur,
-      "Total transactions(TTC)":x.totalMontantTransactionsTTC,
-      "Total transactions(HT)":x.totalMontantTransactions,
-      "Total paiements(TTC)":x.totalMontantPayoutsTTC,
-      "Total paiements(HT)":x.totalMontantPayouts
+      Prenom: x.prenom,
+      Adresse: x.adresse,
+      'Téléphone': x.telephone,
+      "Email": x.email,
+      sexe: x.sexe,
+      "Identifiant Unique":x.iu,
+      "Date de naissance":x.dateNaissance,
+      "Lieu de naissance":x.lieuNaissance,
+      "Nationalité":x.nationalite
       
     }));
 
@@ -334,7 +361,7 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
     );
   }
 
-  onContextMenu(event: MouseEvent, item: Plateforme) {
+  onContextMenu(event: MouseEvent, item: Personne) {
     event.preventDefault();
     this.contextMenuPosition = {
       x: `${event.clientX}px`,

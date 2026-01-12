@@ -20,11 +20,11 @@
       }
     },
     "EMPLOYEES": {
-      "TEXT": "Plateformes",
+      "TEXT": "Citoyens",
       "LIST": {
-        "ALL-EMPLOYEE": "Toutes les plateformes",
-        "ADD-EMPLOYEE": "Ajouter un employé",
-        "EDIT-EMPLOYEE": "Modifier un employé",
+        "ALL-EMPLOYEE": "Citoyens enrollés",
+        "ADD-EMPLOYEE": "Ajouter un citoyen",
+        "EDIT-EMPLOYEE": "Modifier un citoyen",
         "EMPLOYEE-SHIFT": "Poste de l'employé",
         "PROFILE": "Profil de l'employé"
       }

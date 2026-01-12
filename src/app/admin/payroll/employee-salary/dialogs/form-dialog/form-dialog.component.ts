@@ -96,7 +96,7 @@ export class EmployeeSalaryFormComponent {
     });
   }
   loadPlateformeData() {
-    this.employeeSalaryService.getPlateformesWithTransaction().subscribe({
+    this.employeeSalaryService.getPersonnesWithTransaction().subscribe({
       next: (data: any) => {
         // Accéder à la propriété 'contenu' de la réponse API
         this.plateformes = data.content;

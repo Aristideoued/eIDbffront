@@ -95,7 +95,7 @@ export class SidebarComponent
     const currentUserJSON:any = localStorage.getItem('currentUser');
     const currentUser = JSON.parse(currentUserJSON);
     this.userInfo =currentUser.username
-    this.userImg = "assets/images/avatar.jpg";
+    this.userImg = "assets/images/header/logo.png";
       const userRole = this.authService.currentUserValue.role;
       this.userFullName =currentUser.username
       ;

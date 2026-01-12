@@ -6,7 +6,7 @@ import { EmployeeSalary } from './employee-salary.model';
 import { environment } from 'environments/environment.development';
 import { AuthService } from '@core/service/auth.service';
 import { Payout } from './payout.model';
-import { Plateforme } from 'app/admin/employees/allEmployees/employees.model';
+import { Personne } from 'app/admin/employees/allEmployees/employees.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class EmployeeSalaryService {
   }
 
   /** GET: Fetch all employee salaries */
-  getPlateformes(): Observable<EmployeeSalary[]> {
+  getPersonnes(): Observable<EmployeeSalary[]> {
     return this.httpClient
       .get<EmployeeSalary[]>(this.API_URL)
       .pipe(catchError(this.handleError));
@@ -59,22 +59,22 @@ export class EmployeeSalaryService {
     return this.httpClient.get<Payout[]>(environment.apiUrl + "payout/liste", { headers });
   }
 
-    getAllPayoutByPlateforme(idPlateforme:string): Observable<Payout[]> {
+    getAllPayoutByPersonne(idPersonne:string): Observable<Payout[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<Payout[]>(environment.apiUrl + "payout/by-plateforme/"+idPlateforme, { headers });
+    return this.httpClient.get<Payout[]>(environment.apiUrl + "payout/by-Personne/"+idPersonne, { headers });
   }
 
-    getPlateformesWithTransaction(): Observable<Plateforme[]> {
+    getPersonnesWithTransaction(): Observable<Personne[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<Plateforme[]>(environment.apiUrl + "plateforme/with-transaction", { headers });
+    return this.httpClient.get<Personne[]>(environment.apiUrl + "Personne/with-transaction", { headers });
   }
        deleteMonitoring(monito: any): Observable<any> {
       const headers = new HttpHeaders({
@@ -109,7 +109,7 @@ export class EmployeeSalaryService {
         'Authorization': "Bearer "+this.authService.currentUserValue.token
       });
   
-      const data={montant:monito.montant,plateformeId:monito.plateformeId}
+      const data={montant:monito.montant,PersonneId:monito.PersonneId}
             console.log("sent=======> ",data)
 
   
@@ -150,7 +150,7 @@ export class EmployeeSalaryService {
       });
   
       // Transformer le client en bénéficiaire pour l'API
-           const data={montant:monito.montant,plateformeId:monito.plateformeId}
+           const data={montant:monito.montant,PersonneId:monito.PersonneId}
 
       console.log("sent=======> ",data)
   

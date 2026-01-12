@@ -36,8 +36,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { Plateforme } from 'app/admin/employees/allEmployees/employees.model';
 import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
+import { Personne } from 'app/admin/employees/allEmployees/employees.model';
 
 @Component({
     selector: 'app-myprojects',
@@ -87,8 +87,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
   ];
 
    avatar="assets/images/avatar.jpg"
-   dataSource = new MatTableDataSource<Plateforme>([]);
-   selection = new SelectionModel<Plateforme>(true, []);
+   dataSource = new MatTableDataSource<Personne>([]);
+   selection = new SelectionModel<Personne>(true, []);
    contextMenuPosition = { x: '0px', y: '0px' };
    isLoading = true;
    private destroy$ = new Subject<void>();
@@ -126,13 +126,13 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
   }
 
    loadData() {
-     this.employeesService.getPlateformeByUserId().subscribe({
+     this.employeesService.getPersonneByUserId().subscribe({
        next: (data:any) => {
          this.dataSource.data = data;
          this.isLoading = false;
          this.refreshTable();
-         this.dataSource.filterPredicate = (data: Plateforme, filter: string) => {
-           const searchStr = `${data.id} ${data.url} ${data.nom} ${data.userNomPrenom} ${data.userTelephone} ${data.userMail} ${data.commissionAgregateur}`.toLowerCase();
+         this.dataSource.filterPredicate = (data: Personne, filter: string) => {
+           const searchStr = `${data.id} ${data.email} ${data.nom} ${data.prenom} ${data.telephone} ${data.nationalite} ${data.adresse}`.toLowerCase();
            return searchStr.includes(filter);
          };
        },
@@ -193,7 +193,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateRecord(updatedRecord: Plateforme) {
+  private updateRecord(updatedRecord: Personne) {
     const index = this.dataSource.data.findIndex(
       (record) => record.id === updatedRecord.id
     );
@@ -203,7 +203,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteItem(row: Plateforme) {
+  deleteItem(row: Personne) {
     const dialogRef = this.dialog.open(MyProjectsDeleteComponent, {
       data: row,
     });
@@ -238,7 +238,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
   }
 
   exportExcel() {
-    const exportData = this.dataSource.filteredData.map((x) => ({
+    /*const exportData = this.dataSource.filteredData.map((x) => ({
       ID: x.id,
       Url: x.url,
       Nom: x.nom,
@@ -253,7 +253,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
       
     }));
 
-    TableExportUtil.exportToExcel(exportData, 'projects_export');
+    TableExportUtil.exportToExcel(exportData, 'projects_export');*/
   }
 
   isAllSelected() {

@@ -38,7 +38,7 @@ import { AllHoliday } from 'app/admin/holidays/all-holidays/all-holidays.model';
 import { AllHolidaysFormComponent } from 'app/admin/holidays/all-holidays/dialog/form-dialog/form-dialog.component';
 import { AllHolidaysDeleteComponent } from 'app/admin/holidays/all-holidays/dialog/delete/delete.component';
 import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
-import { Plateforme } from 'app/admin/employees/allEmployees/employees.model';
+import { Personne } from 'app/admin/employees/allEmployees/employees.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-transactions',
@@ -72,7 +72,7 @@ export class TransactionsComponent implements OnInit, OnDestroy{
     columnDefinitions = [
     { def: 'select', label: 'Checkbox', type: 'check', visible: true },
     { label: 'ID', def: 'id', type: 'string', visible: false },
-    { label: 'Plateforme', def: 'plateforme', type: 'text', visible: true },
+    { label: 'Personne', def: 'Personne', type: 'text', visible: true },
     { label: 'Montant', def: 'montant', type: 'number', visible: true },
     { label: 'Motif', def: 'motif', type: 'text', visible: true },
     { label: 'Numéro', def: 'numero', type: 'text', visible: true },
@@ -115,7 +115,7 @@ export class TransactionsComponent implements OnInit, OnDestroy{
 
   ngOnInit() {
    // this.loadData();
-    this.loadPlateforme()
+    this.loadPersonne()
   }
 
   private createEmployeeSalaryForm(): UntypedFormGroup {
@@ -123,7 +123,7 @@ export class TransactionsComponent implements OnInit, OnDestroy{
    // console.log("La date",this.employeeSalaryForm.get('datemonitoring')?.value)
     return this.fb.group({
      
-      plateformeId: [''],
+     plateformeId: [''],
      
       
 
@@ -161,8 +161,8 @@ formatCellValue(row: any, def: string): string {
   return row[def];
 }
 
-  loadPlateforme() {
-     this.employeesService.getPlateformeByUserId().subscribe({
+  loadPersonne() {
+     this.employeesService.getPersonneByUserId().subscribe({
        next: (data:any) => {
          this.plateformes = data;
          
@@ -173,9 +173,9 @@ formatCellValue(row: any, def: string): string {
      });
    }
 
-  loadData(idPlateforme:string) {
+  loadData(idPersonne:string) {
      this.isLoading = true;
-    this.holidayService.getAllTransactionByPlateforme(idPlateforme).subscribe({
+    this.holidayService.getAllTransactionByPlateforme(idPersonne).subscribe({
       next: (data:any) => {
         console.log(data)
         this.dataSource.data = data.transactions;
@@ -305,7 +305,7 @@ formatCellValue(row: any, def: string): string {
   exportExcel() {
     const exportData = this.dataSource.filteredData.map((x) => ({
       ID: x.id,
-       'Plateforme': x.plateforme,
+       'Personne': x.plateforme,
       'Montant': x.montant,
       Api: x.api,
         Motif: x.motif,

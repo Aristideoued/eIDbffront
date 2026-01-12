@@ -1,83 +1,48 @@
 import { formatDate } from '@angular/common';
 
-export class Plateforme {
-  id: string;
-  userId: string;
-  nom: string;
-  url: string;
-    callbackUrl: string;
+export class Personne {
+  id!: number;
+  nom!: string;
+  prenom!: string;
+  dateNaissance!: string; // ISO yyyy-MM-dd
+  sexe!: string;
+  nationalite!: string;
+  telephone!: string;
+  email!: string;
+  adresse!: string;
+  photo!: string;
+  iu!: string;
+  lieuNaissance!: string;
+  etat!: string;
 
-  token: string;
-  commissionAgregateur: string;
-  userNomPrenom:string;
-  userTelephone: string;
-  userMail: string;
-  totalMontantTransactions:number;
-  totalMontantPayouts:number;
-  totalMontantTransactionsTTC:number;
-  totalMontantPayoutsTTC:number;
-  
+  constructor(json : Partial<Personne>) {
+    // ID
+    this.id = json?.id || this.getRandomID();
 
-  
-  // Nouvelles propriétés pour correspondre au form-dialog
-  /*name: string; // Alias pour nom complet
-  birthDate?: Date | string;
-  role: string; // Alias pour titre
-  mobile: string; // Alias pour telephone
-  department: string; // Alias pour departement (en anglais)
-  degree?: string;
-  gender?: string;
-  address?: string;
-  joiningDate?: Date | string;
-  salary?: number;
-  lastPromotionDate?: Date | string;
-  employeeStatus?: string;
-  workLocation?: string;*/
+    // Champs principaux
+    this.nom = json?.nom || '';
+    this.prenom = `${json?.prenom || ''} ${json?.prenom || ''}`.trim();
 
-  constructor(employees: Partial<Plateforme>) {
-    this.id = employees.id || this.getRandomID().toString();
-    this.token = employees.token || 'Actif';
-    this.nom = employees.nom || '';
-    this.commissionAgregateur = employees.commissionAgregateur || '';
-    this.userId = employees.userId || '';
-    this.userMail = employees.userMail || '';
-    this.userNomPrenom = employees.userNomPrenom || '';
-    this.userTelephone = employees.userTelephone || '';
-    this.url = employees.url || '';
-    this.callbackUrl = employees.callbackUrl || '';
+    // Identité / contact
+    this.telephone = json?.telephone || '';
+    this.email = json?.email || '';
+    this.iu = json?.iu || ''; // IU comme identifiant fonctionnel
 
-     this.totalMontantPayouts = employees.totalMontantPayouts || 0;
-      this.totalMontantPayoutsTTC = employees.totalMontantPayoutsTTC || 0;
-       this.totalMontantTransactions = employees.totalMontantTransactions || 0;
-        this.totalMontantTransactionsTTC = employees.totalMontantTransactionsTTC || 0;
-    
-    
-    // Initialiser les nouvelles propriétés
-  /*  this.name = employees.name || this.nomComplet;
-    this.birthDate = employees.birthDate || '';
-    this.role = employees.role || this.titre;
-    this.mobile = employees.mobile || this.telephone;
-    this.department = employees.department || this.departement;
-    this.degree = employees.degree || '';
-    this.gender = employees.gender || '';
-    this.address = employees.address || '';
-    this.joiningDate = employees.joiningDate || '';
-    this.salary = employees.salary || 0;
-    this.lastPromotionDate = employees.lastPromotionDate || '';
-    this.employeeStatus = employees.employeeStatus || this.statut;
-    this.workLocation = employees.workLocation || '';*/
+    // URLs / médias
+    this.photo = json?.photo || '';
+    this.lieuNaissance = json?.lieuNaissance || '';
+
+    // État / token
+      this.sexe = json?.sexe || '';
+      this.nationalite = json?.nationalite || '';
+        this.adresse = json?.adresse || '';
+    this.etat = json?.etat || 'INACTIF';
+
+ 
   }
 
-  // Getter pour obtenir le nom complet
-  /*get nomComplet(): string {
-    return `${this.prenom} ${this.nom}`.trim();
-  }*/
-
-
   public getRandomID(): number {
-    const S4 = () => {
-      return ((1 + Math.random()) * 0x10000) | 0;
-    };
+    const S4 = () => ((1 + Math.random()) * 0x10000) | 0;
     return S4() + S4();
   }
 }
