@@ -14,79 +14,61 @@
       <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Hebergeur</mat-label>
-            <input matInput formControlName="hebergeur" required>
-            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>languages</mat-icon>
-            @if (holidayForm.get('hebergeur')?.hasError('required')) {
+            <mat-label>Libellé</mat-label>
+            <input matInput formControlName="libelle" required>
+            @if (holidayForm.get('libelle')?.hasError('required')) {
             <mat-error>
-              L'hebergeur est obligatoire
+              Le libellé est obligatoire
             </mat-error>
             }
           </mat-form-field>
+
+
         </div>
+        
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Date expiration</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="dateExpiration" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            @if (holidayForm.get('dateExpiration')?.hasError('required')) {
+            <mat-label>Téléphone</mat-label>
+             <input matInput formControlName="telephone" required>
+            @if (holidayForm.get('telephone')?.hasError('required')) {
             <mat-error>
-              Veuillez selectionner une date
+              Le téléphone est obligatoire
             </mat-error>
             }
           </mat-form-field>
         </div>
       </div>
       <div class="row">
+         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>mail</mat-icon>
+          </mat-form-field>
+        </div>
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Service</mat-label>
-            <input matInput formControlName="service">
+            <mat-label>Site web</mat-label>
+            <input matInput formControlName="siteWeb">
             <mat-icon class="material-icons-outlined color-icon p-3" matSuffix>language</mat-icon>
           </mat-form-field>
         </div>
-        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Forfait</mat-label>
-            <mat-select formControlName="forfait">
-              <mat-option value="Annuel">Annuel</mat-option>
-              <mat-option value="Mensuel">Mensuel</mat-option>
-             
-            </mat-select>
-          </mat-form-field>
-        </div>
+       
       </div>
       
       <div class="row">
         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
           <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Montant</mat-label>
-            <input matInput formControlName="montant" type="number">
+            <mat-label>Adresse</mat-label>
+            <textarea matInput formControlName="adresse" type="text"></textarea>
           </mat-form-field>
         </div>
 
-         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 mb-2">
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Devise</mat-label>
-            <mat-select formControlName="devise">
-                <mat-option value="FCFA">FCFA</mat-option>
-              <mat-option value="Euro">Euro</mat-option>
-              <mat-option value="Dollar">Dollar</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+       
        
       </div>
      
-      <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
-          <mat-form-field class="example-full-width" appearance="outline">
-            <mat-label>Description</mat-label>
-            <textarea matInput formControlName="description"></textarea>
-          </mat-form-field>
-        </div>
-      </div>
+     
       <div class="row">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mb-2">
           <div class="example-button-row">

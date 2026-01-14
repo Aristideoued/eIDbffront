@@ -13,7 +13,6 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AllHoliday } from '../../all-holidays.model';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,13 +22,14 @@ import { MatSelectModule } from '@angular/material/select';
 import localeFr from '@angular/common/locales/fr';
 import { registerLocaleData } from '@angular/common';
 import moment from 'moment';
+import { Authorite } from '../../all-holidays.model';
 
 registerLocaleData(localeFr);
 
 export interface DialogData {
   id: number;
   action: string;
-  allHoliday: AllHoliday;
+  authorite: Authorite;
 }
 
 @Component({
@@ -49,61 +49,51 @@ export interface DialogData {
         MatDialogClose,
     ]
 })
-export class AllHolidaysFormComponent {
+export class AuthoritesFormComponent {
   action: string;
   dialogTitle: string;
   holidayForm: UntypedFormGroup;
-  allHoliday: AllHoliday;
+  authorite: Authorite;
 
   constructor(
-    public dialogRef: MatDialogRef<AllHolidaysFormComponent>,
+    public dialogRef: MatDialogRef<AuthoritesFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     public holidayService: HolidayService,
     private fb: UntypedFormBuilder
   ) {
     // Set the defaults
     this.action = data.action;
-    this.allHoliday =
+    this.authorite =
       this.action === 'edit'
-        ? data.allHoliday
-        : new AllHoliday({} as AllHoliday);
+        ? data.authorite
+        : new Authorite({} as Authorite);
     this.dialogTitle =
-      this.action === 'edit' ? this.allHoliday.service : 'Nouveau domaine';
+      this.action === 'edit' ? this.authorite.libelle : 'Nouvel ajout';
     this.holidayForm = this.createHolidayForm();
   }
 
   private createHolidayForm(): UntypedFormGroup {
     return this.fb.group({
-      id: [this.allHoliday.id],
-      hebergeur: [this.allHoliday.hebergeur, [Validators.required]],
-      dateExpiration: [this.allHoliday.dateExpiration, [Validators.required]],
-      service: [this.allHoliday.service,[Validators.required]],
-      forfait: [this.allHoliday.forfait,[Validators.required]],
-      description: [this.allHoliday.description],
+      id: [this.authorite.id],
+      libelle: [this.authorite.libelle, [Validators.required]],
+      telephone: [this.authorite.telephone, [Validators.required]],
+      adresse: [this.authorite.adresse,[Validators.required]],
+      email: [this.authorite.email,[Validators.email]],
+      siteWeb: [this.authorite.siteWeb],
 
-      montant: [this.allHoliday.montant,[Validators.required]],
 
-      devise: [this.allHoliday.devise,[Validators.required]]
      
     
     });
   }
-ngOnInit(){
+/*ngOnInit(){
     if(this.action==='edit'){
-    //  const parts = this.employeeSalaryForm.get('datemonitoring')?.value.split('/');
-  const parts=this.data.allHoliday.dateExpiration.split('/')
+  const parts=this.data.Authorite.dateExpiration.split('/')
 
         const formattedDate = new Date(+parts[2], +parts[1] - 1, +parts[0]);
 
-        console.log("formated date==> ",formattedDate)
-         console.log("date==> ",this.data.allHoliday.dateExpiration)
-
-
-        //this.employeeSalaryForm.get('dateMonitoring')?.value=formattedDate
-        
-       /* patchValue({
-          dateMonitoring: 
-        });*/
+      
+      
 
           this.holidayForm.patchValue({
             dateExpiration: formattedDate
@@ -111,7 +101,7 @@ ngOnInit(){
 
     }
 
-}
+}*/
   getErrorMessage(controlName: string): string {
     const control = this.holidayForm.get(controlName);
     if (control?.hasError('required')) {
@@ -123,26 +113,12 @@ ngOnInit(){
   submit(): void {
     if (this.holidayForm.valid) {
       const holidayData = this.holidayForm.getRawValue();
+      console.log(holidayData)
 
-          let dateFin=''
-            
-               
-      
-          if (moment.isMoment(holidayData.dateMonitoring)) {
-            dateFin = holidayData.dateExpiration.format('DD/MM/YYYY');
-          } else if (holidayData.dateExpiration instanceof Date) {
-            dateFin = moment(holidayData.dateExpiration).format('DD/MM/YYYY');
-          } else if (typeof holidayData.dateExpiration === 'string') {
-            dateFin = moment(new Date(holidayData.dateExpiration)).format('DD/MM/YYYY');
-          }
-          else{
-           dateFin= holidayData.dateExpiration.format('DD/MM/YYYY')
-          }
-      
-      console.log("Le domaine==> ",holidayData,dateFin)
+       
       
       if (this.action === 'edit') {
-        this.holidayService.updateDomaine(holidayData,dateFin).subscribe({
+        this.holidayService.updateAutorite(holidayData).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },
@@ -152,7 +128,7 @@ ngOnInit(){
           },
         });
       } else {
-        this.holidayService.addDomaine(holidayData,dateFin).subscribe({
+        this.holidayService.addAutorite(holidayData).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },

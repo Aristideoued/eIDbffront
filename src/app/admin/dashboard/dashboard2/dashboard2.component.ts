@@ -181,7 +181,7 @@ export class Dashboard2Component implements OnInit {
       this.employeesService.getCitoyen().subscribe({
         next: (data:any) => {
           
-          this.leaveRequestData= data.content;
+          this.leaveRequestData= data;
          
         
         },
@@ -410,24 +410,25 @@ export class Dashboard2Component implements OnInit {
     },
   ];
 
-  leaveRequestColumn =[
-    
+  leaveRequestColumn = [
+    { def: 'select', label: 'Checkbox', type: 'check', visible: true },
+    { def: 'id', label: 'ID', type: 'text', visible: false },
+    { def: 'iu', label: 'Identifiant WURI', type: 'text', visible: true },
+     //   { def: 'token', label: 'Token', type: 'text', visible: false },
+
     { def: 'nom', label: 'Nom', type: 'text', visible: true },
-    { def: 'totalMontantTransactions', label: 'Total transactions (HT)', type: 'text', visible: true },
-    { def: 'totalMontantTransactionsTTC', label: 'Total transactions (TTC)', type: 'text', visible: true },
-    { def: 'totalMontantPayouts', label: 'Total paiement (HT)', type: 'text', visible: true },
+    { def: 'prenom', label: 'Prénom', type: 'text', visible: true },
+    { def: 'sexe', label: 'Genre', type: 'text', visible: true },
+     { def: 'email', label: 'Email', type: 'email', visible: true },
+    { def: 'telephone', label: 'Téléphone', type: 'phone', visible: true },
+
+    { def: 'dateNaissance', label: 'Date de naissance', type: 'date', visible: true },
     
-    { def: 'totalMontantPayoutsTTC', label: 'Total paiement (TTC)', type: 'text', visible: true },
-
-
-
-    { def: 'url', label: 'Url', type: 'url', visible: true },
-        { def: 'callbackUrl', label: 'Url de retour', type: 'url', visible: true },
-
-     { def: 'commissionAgregateur', label: 'CommissionAgregateur', type: 'name', visible: true },
-     { def: 'userNomPrenom', label: 'Administrateur', type: 'text', visible: true },
-    { def: 'userTelephone', label: 'Téléphone Administrateur', type: 'phone', visible: true },
-    { def: 'userMail', label: 'Email Administrateur', type: 'email', visible: true },
+    { def: 'lieuNaissance', label: 'Lieu de naissance', type: 'text', visible: true },
+     { def: 'nationalite', label: 'Nationalité', type: 'text', visible: true },
+     { def: 'adresse', label: 'Adresse', type: 'text', visible: true },
+    { def: 'etat', label: 'Etat', type: 'maps', visible: true },
+  //  { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
   
  /* [

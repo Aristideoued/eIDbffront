@@ -229,24 +229,41 @@
                 }
 
                 <!-- Actions -->
-                <ng-container matColumnDef="actions">
-                  <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
-                  <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
-                  <button mat-icon-button color="accent" (click)="$event.stopPropagation(); openPhotoModal(row)"
-        class="tbl-action-btn" matTooltip="Changer la photo">
-  <mat-icon>camera_alt</mat-icon>
-</button>
+               <ng-container matColumnDef="actions">
+                <mat-header-cell class="pr-0 actions-cell" *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let row"  class="pr-0 d-flex gap-1 actions-cell">
+                  
+                  <!-- Voir documents -->
+                  <button mat-icon-button color="accent"
+                    (click)="getDocument(row.id); $event.stopPropagation()"
+                    matTooltip="Voir les documents d'identité">
+                    <mat-icon>visibility</mat-icon>
+                  </button>
 
-                    <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="editCall(row)"
-                      class="tbl-action-btn" matTooltip="Modifier">
-                      <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
-                    </button>
-                    <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="deleteItem(row)"
-                      class="tbl-action-btn" matTooltip="Supprimer">
-                      <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
-                    </button>
-                  </mat-cell>
-                </ng-container>
+                  <!-- Changer photo -->
+                  <button mat-icon-button color="accent"
+                    (click)="openPhotoModal(row); $event.stopPropagation()"
+                    matTooltip="Changer la photo">
+                    <mat-icon>camera_alt</mat-icon>
+                  </button>
+
+                  <!-- Modifier -->
+                  <button mat-icon-button color="accent"
+                    (click)="editCall(row); $event.stopPropagation()"
+                    matTooltip="Modifier">
+                    <app-feather-icons [icon]="'edit'" class="tbl-fav-edit"></app-feather-icons>
+                  </button>
+
+                  <!-- Supprimer -->
+                  <button mat-icon-button color="accent"
+                    (click)="deleteItem(row); $event.stopPropagation()"
+                    matTooltip="Supprimer">
+                    <app-feather-icons [icon]="'trash-2'" class="tbl-fav-delete"></app-feather-icons>
+                  </button>
+
+                </mat-cell>
+              </ng-container>
+
 
                 <mat-header-row *matHeaderRowDef="getDisplayedColumns()"></mat-header-row>
                 <mat-row [@rowsAnimation]="" *matRowDef="let row; columns: getDisplayedColumns();"

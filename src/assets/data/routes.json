@@ -104,10 +104,24 @@
           "role": ["Admin"],
           "submenu": []
         }
+          
+    
       ]
     },
+
+    { "path":"",
+      "title": "citoyen-documents",
+        "iconType": "",
+      "icon": "",
+      "class": "ml-menu",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": []
+            },
     
-    
+  
     {
       "path": "",
       "title": "MENUITEMS.HOLIDAYS.TEXT",
@@ -134,59 +148,6 @@
       ]
     },
     
-    {
-      "path": "",
-      "title": "MENUITEMS.PAYROLL.TEXT",
-      "iconType": "feather",
-      "icon": "package",
-      "class": "menu-toggle",
-      "groupTitle": false,
-      "badge": "",
-      "badgeClass": "",
-      "role": ["Admin"],
-      "submenu": [
-        {
-          "path": "/admin/payroll/employee-salary",
-          "title": "MENUITEMS.PAYROLL.LIST.EMPLOYEE_SALARY",
-          "iconType": "",
-          "icon": "",
-          "class": "ml-menu",
-          "groupTitle": false,
-          "badge": "",
-          "badgeClass": "",
-          "role": [""],
-          "submenu": []
-        }
-       
-      ]
-    },
-
-    {
-      "path": "",
-      "title": "MENUITEMS.API.TEXT",
-      "iconType": "feather",
-      "icon": "package",
-      "class": "menu-toggle",
-      "groupTitle": false,
-      "badge": "",
-      "badgeClass": "",
-      "role": ["Admin"],
-      "submenu": [
-        {
-          "path": "/admin/api/all-api",
-          "title": "MENUITEMS.API.LIST.API",
-          "iconType": "",
-          "icon": "",
-          "class": "ml-menu",
-          "groupTitle": false,
-          "badge": "",
-          "badgeClass": "",
-          "role": [""],
-          "submenu": []
-        }
-       
-      ]
-    },
 
    
  

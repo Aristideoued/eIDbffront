@@ -10,7 +10,6 @@ import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { AllHoliday } from './all-holidays.model';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -34,9 +33,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { AllHolidaysFormComponent } from './dialog/form-dialog/form-dialog.component';
 import { AllHolidaysDeleteComponent } from './dialog/delete/delete.component';
 import { Transaction } from './transaction.model';
+import { Authorite } from './all-holidays.model';
+import { AuthoritesFormComponent } from './dialog/form-dialog/form-dialog.component';
 
 @Component({
     selector: 'app-allholiday',
@@ -66,19 +66,18 @@ import { Transaction } from './transaction.model';
 export class AllHolidayComponent implements OnInit, OnDestroy {
   columnDefinitions = [
     { def: 'select', label: 'Checkbox', type: 'check', visible: true },
-    { label: 'ID', def: 'id', type: 'string', visible: false },
-    { label: 'Plateforme', def: 'plateforme', type: 'text', visible: true },
-    { label: 'Montant', def: 'montant', type: 'number', visible: true },
-    { label: 'Motif', def: 'motif', type: 'text', visible: true },
-    { label: 'Numéro', def: 'numero', type: 'text', visible: true },
-    { label: 'Api', def: 'api', type: 'text', visible: true },
-    { label: 'Date', def: 'date', type: 'text', visible: true },
-    { label: 'Heure', def: 'heure', type: 'text', visible: true },
-  // { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
+    { label: 'ID', def: 'id', type: 'number', visible: false },
+    { label: 'Libellé', def: 'libelle', type: 'text', visible: true },
+    { label: 'Téléphone', def: 'telephone', type: 'phone', visible: true },
+    { label: 'Email', def: 'email', type: 'email', visible: true },
+    { label: 'Adresse', def: 'adresse', type: 'text', visible: true },
+    { label: 'Site web', def: 'siteWeb', type: 'text', visible: true },
+  
+   { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
 
-  dataSource = new MatTableDataSource<Transaction>([]);
-  selection = new SelectionModel<Transaction>(true, []);
+  dataSource = new MatTableDataSource<Authorite>([]);
+  selection = new SelectionModel<Authorite>(true, []);
   contextMenuPosition = { x: '0px', y: '0px' };
   isLoading = true;
   private destroy$ = new Subject<void>();
@@ -131,22 +130,20 @@ formatCellValue(row: any, def: string): string {
 
 
   loadData() {
-    this.holidayService.getAllTransaction().subscribe({
+    this.holidayService.getAllAuthorities().subscribe({
       next: (data:any) => {
-        this.dataSource.data = data.content;
+        this.dataSource.data = data;
         this.isLoading = false;
         this.refreshTable();
         console.log(this.dataSource.data)
-     this.dataSource.filterPredicate = (data: Transaction, filter: string): boolean => {
+     this.dataSource.filterPredicate = (data: Authorite, filter: string): boolean => {
       const searchText = filter.toLowerCase();
       return (
-        (data.plateforme?.toLowerCase().includes(searchText) ?? false) ||
-        (data.motif?.toLowerCase().includes(searchText) ?? false) ||
-        (data.montant?.toString().toLowerCase().includes(searchText) ?? false) ||
-        (data.api?.toLowerCase().includes(searchText) ?? false) ||
-        (data.heure?.toLowerCase().includes(searchText) ?? false) ||
-        (data.numero?.toLowerCase().includes(searchText) ?? false) ||
-        (data.date ? new Date(data.date).toLocaleDateString('fr-FR').includes(searchText) : false)
+        (data.libelle?.toLowerCase().includes(searchText) ?? false) ||
+        (data.adresse?.toLowerCase().includes(searchText) ?? false) ||
+        (data.siteWeb?.toString().toLowerCase().includes(searchText) ?? false) ||
+        (data.telephone?.toLowerCase().includes(searchText) ?? false) ||
+        (data.email?.toLowerCase().includes(searchText) ?? false)
       );
     };
 
@@ -174,21 +171,22 @@ formatCellValue(row: any, def: string): string {
     this.openDialog('add');
   }
 
-  editCall(row: AllHoliday) {
+  editCall(row: Authorite) {
     this.openDialog('edit', row);
   }
 
-  openDialog(action: 'add' | 'edit', data?: AllHoliday) {
+  openDialog(action: 'add' | 'edit', data?: Authorite) {
+    //console.log("La data dans dialogue====> ",data)
     let varDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       varDirection = 'rtl';
     } else {
       varDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(AllHolidaysFormComponent, {
+    const dialogRef = this.dialog.open(AuthoritesFormComponent, {
       width: '60vw',
       maxWidth: '100vw',
-      data: { allHoliday: data, action },
+      data: { authorite: data, action },
       direction: varDirection,
       autoFocus: false,
     });
@@ -200,7 +198,7 @@ formatCellValue(row: any, def: string): string {
         } else {
           this.updateRecord(result);
         }
-        this.refreshTable();
+        this.loadData();
         this.showNotification(
           action === 'add' ? 'snackbar-success' : 'black',
           `${action === 'add' ? 'Add' : 'Edit'} Record Successfully...!!!`,
@@ -211,7 +209,7 @@ formatCellValue(row: any, def: string): string {
     });
   }
 
-  private updateRecord(updatedRecord: Transaction) {
+  private updateRecord(updatedRecord: Authorite) {
     const index = this.dataSource.data.findIndex(
       (record) => record.id === updatedRecord.id
     );
@@ -221,7 +219,7 @@ formatCellValue(row: any, def: string): string {
     }
   }
 
-  deleteItem(row: Transaction) {
+  deleteItem(row: Authorite) {
     const dialogRef = this.dialog.open(AllHolidaysDeleteComponent, {
       data: row,
     });
@@ -230,7 +228,7 @@ formatCellValue(row: any, def: string): string {
         this.dataSource.data = this.dataSource.data.filter(
           (record) => record.id !== row.id
         );
-        this.refreshTable();
+        this.loadData();
         this.showNotification(
           'snackbar-danger',
           'Delete Record Successfully...!!!',
@@ -258,14 +256,11 @@ formatCellValue(row: any, def: string): string {
   exportExcel() {
     const exportData = this.dataSource.filteredData.map((x) => ({
       ID: x.id,
-       'Plateforme': x.plateforme,
-      'Montant': x.montant,
-      Api: x.api,
-        Motif: x.motif,
-         Numero: x.numero,
-         
-      Heure: x.heure,
-      Date: formatDate(new Date(x.date), 'dd-MM-yyyy', 'fr') || ''
+       'Libelle': x.libelle,
+      'Téléphone': x.telephone,
+      Email: x.email,
+        Adresse: x.adresse,
+         'Site Web': x.siteWeb
       
      
     }));
@@ -296,7 +291,7 @@ formatCellValue(row: any, def: string): string {
       'center'
     );
   }
-  onContextMenu(event: MouseEvent, item: AllHoliday) {
+  onContextMenu(event: MouseEvent, item: Authorite) {
     event.preventDefault();
     this.contextMenuPosition = {
       x: `${event.clientX}px`,

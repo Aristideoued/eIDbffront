@@ -1,29 +1,24 @@
 import { formatDate } from '@angular/common';
 
-export class AllHoliday {
+export class Authorite {
   id: number;
-  service: string;
-  hebergeur: string;
-  description: string;
-  dateExpiration: string;
-  forfait: string;
-  devise: string;
-  montant: string;
-  statut!:string
-  nbjour:string
+  libelle: string;
+  adresse: string;
+  email: string;
+  telephone: string;
+  siteWeb: string;
+  
 
 
-  constructor(holiday: Partial<AllHoliday>) {
-    this.id = holiday.id || this.getRandomID();
-    this.service = holiday.service || '';
-    this.hebergeur = holiday.hebergeur || '';
-    this.description = holiday.description || '';
-    this.dateExpiration = holiday.dateExpiration || formatDate(new Date(), 'dd-MM-yyyy', 'fr');
-    this.forfait = holiday.forfait || '';
-    this.devise = holiday.devise || '';
-    this.montant = holiday.montant || '';
-    this.statut=holiday.statut||''
-    this.nbjour=holiday.nbjour||''
+
+  constructor(authorite: Partial<Authorite>) {
+    this.id = authorite.id || this.getRandomID();
+    this.libelle = authorite.libelle || '';
+    this.adresse = authorite.adresse || '';
+    this.email = authorite.email || '';
+    this.telephone = authorite.telephone || '';
+    this.siteWeb = authorite.siteWeb || '';
+    
    
   }
 

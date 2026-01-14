@@ -13,8 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
 
 export interface DialogData {
   id: number;
-  service: string;
-  hebergeur: string;
+  libelle: string;
+ 
   
 }
 
@@ -28,7 +28,6 @@ export interface DialogData {
         MatDialogActions,
         MatButtonModule,
         MatDialogClose,
-        DatePipe,
     ]
 })
 export class AllHolidaysDeleteComponent {
@@ -38,7 +37,7 @@ export class AllHolidaysDeleteComponent {
     public holidayService: HolidayService
   ) {}
   confirmDelete(): void {
-    this.holidayService.deleteDomaine(this.data.id).subscribe({
+    this.holidayService.deleteAutorite(this.data.id).subscribe({
       next: (response) => {
         // console.log('Delete Response:', response);
         this.dialogRef.close(response); // Close with the response data

@@ -1,27 +1,15 @@
-import {
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogContent,
-  MatDialogClose,
-} from '@angular/material/dialog';
 import { Component, Inject } from '@angular/core';
-import {
-  UntypedFormGroup,
-  UntypedFormBuilder,
-  Validators,
-  FormsModule,
-  ReactiveFormsModule,
-  ValidatorFn,
-  AbstractControl,
-  ValidationErrors,
-} from '@angular/forms';
-import { AdminService } from '../../admin.service';
-import { Admin } from '../../admin.model';
-import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule, UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogContent, MatDialogClose, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { AdminService } from '../../admin.service';
+import { AllAdminFormComponent } from '../form-dialog/form-dialog.component';
+import { Admin } from '../../admin.model';
+
 
 export interface DialogData {
   id: number;
@@ -30,10 +18,8 @@ export interface DialogData {
 }
 
 @Component({
-    selector: 'app-all-admin-form',
-    templateUrl: './form-dialog.component.html',
-    styleUrls: ['./form-dialog.component.scss'],
-    imports: [
+  selector: 'app-password-resset-dialog',
+  imports: [
         MatButtonModule,
         MatIconModule,
         MatDialogContent,
@@ -43,10 +29,14 @@ export interface DialogData {
         MatInputModule,
         MatSelectModule,
         MatDialogClose,
-    ]
+    ],
+  templateUrl: './password-resset-dialog.component.html',
+  styleUrl: './password-resset-dialog.component.scss'
 })
-export class AllAdminFormComponent {
-  action: string;
+export class PasswordRessetDialogComponent {
+
+
+   action: string;
   dialogTitle: string;
   adminForm: UntypedFormGroup;
   admin: Admin;
@@ -66,7 +56,7 @@ export class AllAdminFormComponent {
       this.action === 'edit' ? data.admin : new Admin({} as Admin);
     this.dialogTitle =
       this.action === 'edit' 
-        ? `Modifier ${this.admin.nom} ${this.admin.prenom}` 
+        ? `Modification du mot de passe de ${this.admin.nom} ${this.admin.prenom}` 
         : 'Nouvel Administrateur';
     this.adminForm = this.createAdminForm();
     console.log('admin recu====> ', this.admin)
@@ -78,32 +68,15 @@ private createAdminForm(): UntypedFormGroup {
 
   return  this.fb.group({
     id: [this.admin.id],
-
-    username: [
-      this.admin.username,
-      [Validators.required, Validators.minLength(3)]
-    ],
-
-    nom: [this.admin.nom, [Validators.required]],
-    prenom: [this.admin.prenom, [Validators.required]],
-
-    roleid: [this.admin.roleid, [Validators.required]],
-    role: [this.admin.role],
-
-    telephone: [
-      this.admin.telephone,
-      [Validators.required, Validators.pattern(/^\+?[\d\s\-\(\)]+$/)]
-    ],
+    password: ['', [Validators.required, Validators.minLength(12)]],
+    confirmPassword: ['', [Validators.required]]
     
-      ...(this.action === 'add' && {
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmPassword: ['', [Validators.required]]
-      })
+  
 
       
     }, {
       // Validateur personnalisé pour confirmer le mot de passe
-      validators: this.action === 'add' ? this.passwordMatchValidator : null
+      validators:  this.passwordMatchValidator 
     });
   }
 
@@ -114,33 +87,7 @@ private createAdminForm(): UntypedFormGroup {
     return password === confirmPassword ? null : { passwordMismatch: true };
   }
   
-private passwordMatchValidatorIfNeeded(isAdd: boolean) {
-  return (form: UntypedFormGroup) => {
 
-    const passwordCtrl = form.get('password');
-    const confirmCtrl = form.get('confirmPassword');
-
-    const password = passwordCtrl?.value;
-    const confirm = confirmCtrl?.value;
-
-    //  MODE EDIT → si les deux champs sont vides → OK
-    if (!isAdd && !password && !confirm) {
-      return null;
-    }
-
-    //  Un seul des deux est rempli
-    if ((password && !confirm) || (!password && confirm)) {
-      return { passwordIncomplete: true };
-    }
-
-    //  Les deux sont remplis mais différents
-    if (password !== confirm) {
-      return { passwordMismatch: true };
-    }
-
-    return null;
-  };
-}
 
 
 
@@ -166,26 +113,9 @@ private passwordMatchValidatorIfNeeded(isAdd: boolean) {
     return '';
   }
 
-  ngOnInit(){
-   this.loadRole() 
-
-  }
+ 
 
 
-   loadRole() {
-    this.adminService.getRoles().subscribe({
-      next: (data: any) => {
-        // Accéder à la propriété 'contenu' de la réponse API
-        //this.dataSource.data = data.content || data;
-        this.roles=data
-        console.log("Les roles====> ",   this.roles);
-
-       
-      
-      },
-      error: (err) => console.error(err),
-    });
-  }
 
   // Handle form submission
   submit(): void {
@@ -197,8 +127,9 @@ private passwordMatchValidatorIfNeeded(isAdd: boolean) {
         delete adminData.confirmPassword;
       }
 
-      if (this.action === 'edit') {
-        this.adminService.updateAdmin(adminData).subscribe({
+
+     
+        this.adminService.updateAdminPassword(adminData,this.data.admin.id).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },
@@ -207,17 +138,7 @@ private passwordMatchValidatorIfNeeded(isAdd: boolean) {
             // Optionnellement afficher un message d'erreur à l'utilisateur
           },
         });
-      } else {
-        this.adminService.addAdmin(adminData).subscribe({
-          next: (response) => {
-            this.dialogRef.close(response);
-          },
-          error: (error) => {
-            console.error('Erreur d\'ajout:', error);
-            // Optionnellement afficher un message d'erreur à l'utilisateur
-          },
-        });
-      }
+   
     } else {
       // Marquer tous les champs comme touchés pour afficher les erreurs
       this.adminForm.markAllAsTouched();

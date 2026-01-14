@@ -38,6 +38,7 @@ import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Personne } from './employees.model';
 import { PhotoUploadModalComponent } from './dialogs/photo/photo.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -101,7 +102,8 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
     public httpClient: HttpClient,
     public dialog: MatDialog,
     public employeesService: EmployeesService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router:Router
   ) {}
 
   ngOnInit() {
@@ -121,6 +123,10 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
     return this.columnDefinitions
       .filter((cd) => cd.visible)
       .map((cd) => cd.def);
+  }
+
+  getDocument(id:number){
+    this.router.navigate(['/admin/employees/documents', id]);
   }
 
   loadData() {

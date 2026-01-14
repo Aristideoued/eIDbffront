@@ -2,7 +2,7 @@
   <div class="content-block">
     <div class="block-header">
       <!-- breadcrumb -->
-      <app-breadcrumb [title]="'Tous les Administrateurs'" [items]="['Administrateurs']" [active_item]="'Tous les Administrateurs'">
+      <app-breadcrumb [title]="'Les utilisateurs'" [items]="['Utilisateurs']" [active_item]="'Les utilisateurs'">
       </app-breadcrumb>
     </div>
     <div class="row">
@@ -12,7 +12,7 @@
             <div class="left">
               <ul class="header-buttons-left ms-0">
                 <li class="tbl-title">
-                  <h2>Administrateurs</h2>
+                  <h2>Utilisateurs</h2>
                 </li>
                 <li class="tbl-search-box">
                   <label for="search-input"><i class="material-icons search-icon">search</i></label>
@@ -146,12 +146,16 @@
                 <ng-container matColumnDef="actions">
                   <mat-header-cell class="pr-0" *matHeaderCellDef>Actions</mat-header-cell>
                   <mat-cell *matCellDef="let row; let i=index;" class="pr-0">
+                      <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="ressetPassword('edit',row)"
+                      class="tbl-action-btn" matTooltip="Modifier le mot de passe">
+                      <app-feather-icons [icon]="'lock'" [class]="'tbl-fav-edit'"></app-feather-icons>
+                    </button>
                     <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="editCall(row)"
-                      class="tbl-action-btn">
+                      class="tbl-action-btn" matTooltip="Modifier">
                       <app-feather-icons [icon]="'edit'" [class]="'tbl-fav-edit'"></app-feather-icons>
                     </button>
                     <button mat-icon-button color="accent" (click)="$event.stopPropagation()" (click)="deleteItem(row)"
-                      class="tbl-action-btn">
+                      class="tbl-action-btn" matTooltip="Supprimer">
                       <app-feather-icons [icon]="'trash-2'" [class]="'tbl-fav-delete'"></app-feather-icons>
                     </button>
                   </mat-cell>

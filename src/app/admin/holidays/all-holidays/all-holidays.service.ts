@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
-import { AllHoliday } from './all-holidays.model';
+import {  Authorite } from './all-holidays.model';
 import { environment } from 'environments/environment.development';
 import { AuthService } from '@core/service/auth.service';
 import { Transaction } from './transaction.model';
+import { aU } from '@fullcalendar/core/internal-common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HolidayService {
   private readonly API_URL = 'assets/data/holidays.json';
-  private dataChange: BehaviorSubject<AllHoliday[]> = new BehaviorSubject<
-    AllHoliday[]
+  private dataChange: BehaviorSubject<Authorite[]> = new BehaviorSubject<
+    Authorite[]
   >([]);
   token: string;
 
@@ -22,13 +23,13 @@ export class HolidayService {
     
   }
 
-  get data(): AllHoliday[] {
+  get data(): Authorite[] {
     return this.dataChange.value;
   }
 
   /** GET: Fetch all holidays */
-  getAllHolidays(): Observable<AllHoliday[]> {
-    return this.httpClient.get<AllHoliday[]>(this.API_URL).pipe(
+  getAuthorites(): Observable<Authorite[]> {
+    return this.httpClient.get<Authorite[]>(this.API_URL).pipe(
       map((holidays) => {
         this.dataChange.next(holidays); // Update the data change observable
         return holidays;
@@ -38,8 +39,8 @@ export class HolidayService {
   }
 
   /** POST: Add a new holiday */
-  addHoliday(holiday: AllHoliday): Observable<AllHoliday> {
-    return this.httpClient.post<AllHoliday>(this.API_URL, holiday).pipe(
+  addHoliday(holiday: Authorite): Observable<Authorite> {
+    return this.httpClient.post<Authorite>(this.API_URL, holiday).pipe(
       map(() => {
         return holiday; // Return the newly added holiday
       }),
@@ -48,8 +49,8 @@ export class HolidayService {
   }
 
   /** PUT: Update an existing holiday */
-  updateHoliday(holiday: AllHoliday): Observable<AllHoliday> {
-    return this.httpClient.put<AllHoliday>(`${this.API_URL}`, holiday).pipe(
+  updateHoliday(holiday: Authorite): Observable<Authorite> {
+    return this.httpClient.put<Authorite>(`${this.API_URL}`, holiday).pipe(
       map(() => {
         return holiday; // Return the updated holiday
       }),
@@ -69,44 +70,42 @@ export class HolidayService {
 
 
 
-       updateDomaine(abonnement: AllHoliday,dateExpiration:any): Observable<AllHoliday> {
+      updateAutorite(autorite: Authorite): Observable<Authorite> {
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.token
+      'Authorization': "Bearer "+this.authService.currentUserValue.token
       });
   
       const userData = {
-        id:abonnement.id,
-        formule:abonnement.hebergeur,
-        service:abonnement.service,
-        forfait:abonnement.forfait,
-        devise: abonnement.devise,
-        montant: abonnement.montant,
-        description: abonnement.description,
-        dateExpiration: dateExpiration
+       
+         libelle:autorite.libelle,
+        email:autorite.email,
+        adresse:autorite.adresse,
+        siteWeb: autorite.siteWeb,
+        telephone: autorite.telephone,
        
       };
 
-      console.log("Le user envoyé============> ",userData)
+     // console.log("Le user envoyé============> ",userData)
   
       return this.httpClient
-        .post<any>(environment.apiUrl + "update/abonnement",JSON.stringify(userData) , { headers })
+        .put<any>(environment.apiUrl + "autorites/update/"+autorite.id,JSON.stringify(userData) , { headers })
         .pipe(
-          map((response) => new AllHoliday({
-            id: response.id || abonnement.id
+          map((response) => new Authorite({
+            id: response.id || autorite.id
            
           })),
           catchError(this.handleError)
         );
     }
 
- getAllTransaction(): Observable<Transaction[]> {
+ getAllAuthorities(): Observable<Authorite[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer "+this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<Transaction[]>(environment.apiUrl + "transaction/liste", { headers });
+    return this.httpClient.get<Authorite[]>(environment.apiUrl + "autorites/all", { headers });
   }
 
    getAllTransactionByPlateforme(idPlateforme:string): Observable<Transaction[]> {
@@ -117,31 +116,30 @@ export class HolidayService {
 
     return this.httpClient.get<Transaction[]>(environment.apiUrl + "transaction/by-plateforme/"+idPlateforme, { headers });
   }
-    addDomaine(abonnement: AllHoliday,dateExpiration:any): Observable<AllHoliday> {
+    addAutorite(autorite: Authorite): Observable<Authorite> {
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.token
+      'Authorization': "Bearer "+this.authService.currentUserValue.token
       });
   
       const userData = {
-        formule:abonnement.hebergeur,
-        service:abonnement.service,
-        forfait:abonnement.forfait,
-        devise: abonnement.devise,
-        montant: abonnement.montant,
-        description: abonnement.description,
-        dateExpiration: dateExpiration
+        libelle:autorite.libelle,
+        email:autorite.email,
+        adresse:autorite.adresse,
+        siteWeb: autorite.siteWeb,
+        telephone: autorite.telephone,
+       
       
        
       };
 
-      console.log("Le domaine envoyé============> ",userData)
+     // console.log("Le domaine envoyé============> ",userData)
   
       return this.httpClient
-        .post<any>(environment.apiUrl + "addAbonnement",JSON.stringify(userData) , { headers })
+        .post<any>(environment.apiUrl + "autorites/creer",JSON.stringify(userData) , { headers })
         .pipe(
-          map((response) => new AllHoliday({
-            id: response.id || abonnement.id,
+          map((response) => new Authorite({
+            id: response.id || autorite.id,
            
           })),
           catchError(this.handleError)
@@ -149,24 +147,20 @@ export class HolidayService {
     }
 
 
-       deleteDomaine(id: number): Observable<AllHoliday> {
+       deleteAutorite(id: number): Observable<Authorite> {
       const headers = new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': this.token
+      'Authorization': "Bearer "+this.authService.currentUserValue.token
       });
   
-      const userData = {
-        id:id,
-      
-       
-      };
+    
 
-      console.log("Le user envoyé============> ",userData)
+     // console.log("Le user envoyé============> ",userData)
   
       return this.httpClient
-        .post<any>(environment.apiUrl + "delete/abonnement",JSON.stringify(userData) , { headers })
+        .delete<any>(environment.apiUrl + "autorites/delete/"+id, { headers })
         .pipe(
-          map((response) => new AllHoliday({
+          map((response) => new Authorite({
             id: response.id || id
            
            

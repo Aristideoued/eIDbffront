@@ -34,12 +34,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Transaction } from 'app/admin/holidays/all-holidays/transaction.model';
 import { HolidayService } from 'app/admin/holidays/all-holidays/all-holidays.service';
-import { AllHoliday } from 'app/admin/holidays/all-holidays/all-holidays.model';
-import { AllHolidaysFormComponent } from 'app/admin/holidays/all-holidays/dialog/form-dialog/form-dialog.component';
 import { AllHolidaysDeleteComponent } from 'app/admin/holidays/all-holidays/dialog/delete/delete.component';
 import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
 import { Personne } from 'app/admin/employees/allEmployees/employees.model';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { Authorite } from 'app/admin/holidays/all-holidays/all-holidays.model';
+import { AuthoritesFormComponent } from 'app/admin/holidays/all-holidays/dialog/form-dialog/form-dialog.component';
 @Component({
   selector: 'app-transactions',
     animations: [rowsAnimation],
@@ -221,18 +221,18 @@ formatCellValue(row: any, def: string): string {
     this.openDialog('add');
   }
 
-  editCall(row: AllHoliday) {
+  editCall(row: Authorite) {
     this.openDialog('edit', row);
   }
 
-  openDialog(action: 'add' | 'edit', data?: AllHoliday) {
+  openDialog(action: 'add' | 'edit', data?: Authorite) {
     let varDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       varDirection = 'rtl';
     } else {
       varDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(AllHolidaysFormComponent, {
+    const dialogRef = this.dialog.open(AuthoritesFormComponent, {
       width: '60vw',
       maxWidth: '100vw',
       data: { allHoliday: data, action },
@@ -343,7 +343,7 @@ formatCellValue(row: any, def: string): string {
       'center'
     );
   }
-  onContextMenu(event: MouseEvent, item: AllHoliday) {
+  onContextMenu(event: MouseEvent, item: Authorite) {
     event.preventDefault();
     this.contextMenuPosition = {
       x: `${event.clientX}px`,

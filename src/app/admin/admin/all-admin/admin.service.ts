@@ -26,7 +26,7 @@ export class AdminService {
       'Authorization': "Bearer "+this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<Admin[]>(environment.apiUrl + "user/liste", { headers });
+    return this.httpClient.get<Admin[]>(environment.apiUrl + "users/liste", { headers });
   }
 
     getAllApi(): Observable<Api[]> {
@@ -68,7 +68,7 @@ export class AdminService {
       'Authorization': "Bearer "+this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<any[]>(environment.apiUrl + "role/liste", { headers });
+    return this.httpClient.get<any[]>(environment.apiUrl + "roles/liste", { headers });
   }
 
   /** POST: Ajouter un nouvel administrateur */
@@ -89,7 +89,7 @@ export class AdminService {
     console.log(adminData)
 
     return this.httpClient
-      .post<any>(environment.apiUrl + "user/creer",JSON.stringify(adminData) , { headers })
+      .post<any>(environment.apiUrl + "users/creer",JSON.stringify(adminData) , { headers })
       .pipe(
         map((response) => new Admin({
           id: response.id || admin.id,
@@ -188,9 +188,12 @@ export class AdminService {
     const adminData = {
       id: admin.id,
       username: admin.username,
-     
+      password:admin.password,
+
       nom: admin.nom,
       prenom: admin.prenom,
+      role:admin.role,
+      roleid:admin.roleid,
        roles: [{ "id": admin.roleid }] ,
       telephone: admin.telephone
     };
@@ -198,7 +201,38 @@ export class AdminService {
     console.log(adminData)
 
     return this.httpClient
-      .put<any>(`${environment.apiUrl}user/update/`+admin.id, adminData, { headers })
+      .put<any>(`${environment.apiUrl}users/update/`+admin.id, adminData, { headers })
+      .pipe(
+        map((response) => new Admin({
+          id: response.id || admin.id,
+          username: response.username || admin.username,
+          password: response.password || admin.password,
+          nom: response.nom || admin.nom,
+          prenom: response.prenom || admin.prenom,
+          role: response.role || admin.role,
+          telephone: response.telephone || admin.telephone
+        })),
+        catchError(this.handleError)
+      );
+  }
+
+    updateAdminPassword(admin: Admin,id:number): Observable<Admin> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+       'Authorization': "Bearer "+this.authService.currentUserValue.token
+    });
+
+    const adminData = {
+     
+      password:admin.password,
+
+     
+    };
+
+    console.log(adminData)
+
+    return this.httpClient
+      .put<any>(`${environment.apiUrl}users/update/password/`+id, adminData, { headers })
       .pipe(
         map((response) => new Admin({
           id: response.id || admin.id,
@@ -222,7 +256,7 @@ export class AdminService {
 
    
     return this.httpClient
-      .delete<void>(`${environment.apiUrl}user/delete/`+id)
+      .delete<void>(`${environment.apiUrl}users/delete/`+id)
       .pipe(
         map(() => id),
         catchError(this.handleError)

@@ -124,9 +124,9 @@
       }
     },
     "HOLIDAYS": {
-      "TEXT": "Transactions",
+      "TEXT": "Autorités de delivrance",
       "LIST": {
-        "ALL-HOLIDAYS": "Toutes les transactions",
+        "ALL-HOLIDAYS": "Autorités de delivrance disponibles",
         "ADD-HOLIDAY": "Ajouter un jour férié",
         "EDIT-HOLIDAY": "Modifier un jour férié"
       }
@@ -150,9 +150,9 @@
         }
       },
       "TRANSACTIONS": {
-        "TEXT": "Transactions",
+        "TEXT": "Autorités de delivrance",
         "LIST": {
-          "TRANSACTIONS": "Transactions"
+          "TRANSACTIONS": "Autorités de delivrance"
          
         }
       },

@@ -4,6 +4,7 @@ import { AuthGuard } from '@core/guard/auth.guard';
 import { AuthLayoutComponent } from './layout/app-layout/auth-layout/auth-layout.component';
 import { Page404Component } from './authentication/page404/page404.component';
 import { Role } from '@core';
+import { DocumentsComponent } from './admin/employees/documents/documents.component';
 
 export const APP_ROUTE: Route[] = [
   {
@@ -40,6 +41,7 @@ export const APP_ROUTE: Route[] = [
         loadChildren: () =>
           import('./client/client.routes').then((m) => m.CLIENT_ROUTE),
       },
+      
       {
         path: 'calendar',
         loadChildren: () =>

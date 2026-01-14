@@ -36,6 +36,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { AllAdminFormComponent } from './dialog/form-dialog/form-dialog.component';
 import { AllAdminDeleteComponent } from './dialog/delete/delete.component';
+import { PasswordRessetDialogComponent } from './dialog/password-resset-dialog/password-resset-dialog.component';
 
 @Component({
     selector: 'app-all-admins',
@@ -177,7 +178,7 @@ openDialog(action: 'add' | 'edit', data?: Admin) {
       } else {
         this.updateRecord(result);
       }
-      this.refreshTable();
+      this.loadData();
       this.showNotification(
         action === 'add' ? 'snackbar-success' : 'black',
         `${action === 'add' ? 'Ajout' : 'Modification'} effectué avec succès !`,
@@ -198,10 +199,36 @@ deleteItem(row: Admin) {
       this.dataSource.data = this.dataSource.data.filter(
         (record) => record.id !== row.id
       );
-      this.refreshTable();
+      this.loadData();
       this.showNotification(
         'snackbar-danger',
         'Suppression effectuée avec succès !',
+        'bottom',
+        'center'
+      );
+    }
+  });
+}
+
+ressetPassword(action: 'add' | 'edit',row: Admin) {
+  const dialogRef = this.dialog.open(PasswordRessetDialogComponent, {
+      width: '700px',        // largeur
+    maxWidth: '90vw',      // largeur max responsive
+    height: 'auto',  // Changé ici
+   data:{
+    admin: row,
+    action:action
+   }
+  });
+  dialogRef.afterClosed().subscribe((result) => {
+    if (result) {
+      this.dataSource.data = this.dataSource.data.filter(
+        (record) => record.id !== row.id
+      );
+      this.loadData();
+      this.showNotification(
+        'snackbar-danger',
+        'Modification effectuée avec succès !',
         'bottom',
         'center'
       );
