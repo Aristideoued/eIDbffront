@@ -5,15 +5,18 @@ import { AuthLayoutComponent } from './layout/app-layout/auth-layout/auth-layout
 import { Page404Component } from './authentication/page404/page404.component';
 import { Role } from '@core';
 import { DocumentsComponent } from './admin/employees/documents/documents.component';
+import { IdentityComponent } from './admin/employees/identity/identity.component';
 
 export const APP_ROUTE: Route[] = [
+   
   {
+    
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       { path: '', redirectTo: '/authentication/signin', pathMatch: 'full' },
-
+       
       {
         path: 'admin',
         canActivate: [AuthGuard],
@@ -41,6 +44,8 @@ export const APP_ROUTE: Route[] = [
         loadChildren: () =>
           import('./client/client.routes').then((m) => m.CLIENT_ROUTE),
       },
+      
+   
       
       {
         path: 'calendar',

@@ -5,6 +5,7 @@ import { ForgotPasswordComponent } from "./forgot-password/forgot-password.compo
 import { LockedComponent } from "./locked/locked.component";
 import { Page404Component } from "./page404/page404.component";
 import { Page500Component } from "./page500/page500.component";
+import { IdentityComponent } from "app/admin/employees/identity/identity.component";
 export const AUTH_ROUTE: Route[] = [
   {
     path: "",
@@ -23,6 +24,12 @@ export const AUTH_ROUTE: Route[] = [
     path: "forgot-password",
     component: ForgotPasswordComponent,
   },
+   {
+        path: 'identity/:token',
+        component: IdentityComponent
+      }
+
+  ,
   {
     path: "locked",
     component: LockedComponent,

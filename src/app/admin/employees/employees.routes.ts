@@ -6,6 +6,7 @@ import { EditEmployeeComponent } from './edit-employee/edit-employee.component';
 import { EmployeeProfileComponent } from './employee-profile/employee-profile.component';
 import { EmployeeShiftComponent } from './employee-shift/employee-shift.component';
 import { DocumentsComponent } from './documents/documents.component';
+import { IdentityComponent } from './identity/identity.component';
 export const ADMIN_EMPLOYEE_ROUTE: Route[] = [
   {
     path: 'allEmployees',
@@ -19,6 +20,7 @@ export const ADMIN_EMPLOYEE_ROUTE: Route[] = [
   path: 'documents/:id',
   component: DocumentsComponent
 }
+
 ,
   {
     path: 'edit-employee',

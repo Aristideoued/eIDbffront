@@ -1,14 +1,43 @@
-<div class="container">
+
+@if(data){
+    <div  class="container">
   <div class="header">
-    <h1>Documents d'Identité de {{nomComplet}}</h1>
+    <h1>{{nomComplet}}</h1>
   </div>
+  <div class="photo-container2">
+    <img 
+            [src]="photoUrl+iu" 
+            alt="Photo d'identité" 
+            class="photo"
+            >
+  </div>
+   <div class="header">
+    <h2 style="text-align: center;">Identifiant unique <p style="color: blue;">{{iu}}</p> </h2>
+  </div>
+   <div class="row">
+    <div class="col"><h3>Date de naissance<p style="color: blue;">{{data.dateNaissance | date:'dd/MM/yyyy' }}</p> </h3>
+</div>
+    <div class="col"><h3>Sexe <p style="color: blue;">{{data.sexe}}</p> </h3>
+</div>
+  </div>
+  
+   <div class="row">
+    <div class="col"><h3>Nationalité <p style="color: blue;">{{data.nationalite}}</p> </h3>
+</div>
+    <div class="col"><h3>Lieu de naissance <p style="color: blue;">{{data.lieuNaissance}}</p> </h3>
+</div>
+
+  </div>
+  
+
+  <div style="text-align: center;margin-top: 40px;"><h2>Documents d'itentité</h2></div>
 
   <div class="documents-grid">
     <mat-card *ngFor="let doc of documents" class="document-card">
       <!-- Header avec libellé -->
       <mat-card-header class="card-header">
         <mat-icon class="header-icon">description</mat-icon>
-        <mat-card-title>{{ doc.typeDocument.libelle }}</mat-card-title>
+        <mat-card-title>{{ doc.libelle }}</mat-card-title>
       </mat-card-header>
 
       <mat-card-content class="card-content">
@@ -25,13 +54,13 @@
 
 
           <!-- Informations principales à droite -->
-          <div class="info-main">
+         <div class="info-main">
             <div class="info-row">
               <mat-icon class="info-icon">business</mat-icon>
               <div class="info-text">
                 <span class="info-label">Autorité de délivrance</span>
-                <span *ngIf="doc.typeDocument.libelle=='Certificat de nationalité'" class="info-value">{{ doc.autorite.libelle }} de {{doc.lieuEtablissement}}</span>
-                <span *ngIf="doc.typeDocument.libelle!=='Certificat de nationalité'" class="info-value">{{ doc.autorite.libelle }}</span>
+                <span *ngIf="doc.libelle=='Certificat de nationalité'" class="info-value">{{ doc.autorite }} de {{doc.lieuEtablissement}}</span>
+                <span *ngIf="doc.libelle!=='Certificat de nationalité'" class="info-value">{{ doc.autorite }}</span>
 
               </div>
             </div>
@@ -39,15 +68,15 @@
             <mat-icon class="info-icon">fingerprint</mat-icon>
             <div class="info-text">
             <span class="info-label">Référence</span>
-            <span class="info-value">{{ doc.numero.reference }}</span>
+            <span class="info-value">{{ doc.reference }}</span>
             </div>
         </div>
 
-        <div *ngIf="doc.numero.nip" class="info-row">
+        <div *ngIf="doc.nip" class="info-row">
             <mat-icon class="info-icon">key</mat-icon>
             <div class="info-text">
             <span class="info-label">NIP</span>
-            <span class="info-value">{{ doc.numero.nip }}</span>
+            <span class="info-value">{{ doc.nip }}</span>
             </div>
         </div>
 
@@ -55,25 +84,25 @@
               <mat-icon class="info-icon">face</mat-icon>
               <div class="info-text">
                 <span class="info-label">Nom</span>
-                <span class="info-value">{{ doc.personne.nom }}</span>
+                <span class="info-value">{{ data.nom }}</span>
               </div>
             </div>
              <div class="info-row">
               <mat-icon class="info-icon">face</mat-icon>
               <div class="info-text">
                 <span class="info-label">Prénom</span>
-                <span class="info-value">{{ doc.personne.prenom  }}</span>
+                <span class="info-value">{{ data.prenom  }}</span>
               </div>
             </div>
             <div class="info-row">
             <mat-icon class="info-icon">
-              {{ doc.personne.sexe === 'Masculin' ? 'male' :
-                doc.personne.sexe === 'Feminin' ? 'female' : 'transgender' }}
+              {{ data.sexe === 'Masculin' ? 'male' :
+                data.sexe === 'Feminin' ? 'female' : 'transgender' }}
             </mat-icon>
 
             <div class="info-text">
               <span class="info-label">Sexe</span>
-              <span class="info-value">{{ doc.personne.sexe }}</span>
+              <span class="info-value">{{ data.sexe }}</span>
             </div>
           </div>
 
@@ -111,7 +140,7 @@
             <mat-icon class="info-icon">cake</mat-icon>
             <div class="info-text">
               <span class="info-label">Date de naissance</span>
-              <span class="info-value">{{ doc.personne.dateNaissance | date:'dd/MM/yyyy' }}</span>
+              <span class="info-value">{{ data.dateNaissance | date:'dd/MM/yyyy' }}</span>
             </div>
           </div>
 
@@ -119,7 +148,7 @@
             <mat-icon class="info-icon">location_on</mat-icon>
             <div class="info-text">
               <span class="info-label">Lieu de naissance</span>
-              <span class="info-value">{{ doc.personne.lieuNaissance }}</span>
+              <span class="info-value">{{ data.lieuNaissance }}</span>
             </div>
           </div>
         </div>
@@ -152,3 +181,14 @@
     </mat-card>
   </div>
 </div>
+
+}
+@else {
+<div class="container">
+     <div class="header">
+    <h1 style="color: red; text-align: center; margin-top: 60px;">Echec de verification, veuillez reessayer </h1>
+  </div>
+
+</div>
+}
+

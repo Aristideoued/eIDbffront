@@ -55,6 +55,16 @@ export class EmployeesService {
 
     return this.httpClient.get<any[]>(environment.apiUrl + "documents/personnes/"+id+"/documents", { headers });
   }
+
+
+  getCitoyenIdentity(token:string): Observable<any[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+    return this.httpClient.get<any[]>(environment.apiUrl + "qrcodes/verify?token="+token, { headers });
+  }
    getCitoyenById(id:number): Observable<any[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
