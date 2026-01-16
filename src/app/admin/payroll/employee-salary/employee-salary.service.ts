@@ -6,7 +6,7 @@ import { EmployeeSalary } from './employee-salary.model';
 import { environment } from 'environments/environment.development';
 import { AuthService } from '@core/service/auth.service';
 import { Payout } from './payout.model';
-import { Personne } from 'app/admin/employees/allEmployees/employees.model';
+import { Personne } from 'app/admin/citoyens/allCitoyens/employees.model';
 
 @Injectable({
   providedIn: 'root',

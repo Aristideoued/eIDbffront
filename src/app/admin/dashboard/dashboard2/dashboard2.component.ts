@@ -31,10 +31,10 @@ import {
 } from '@shared/components/progress-table/progress-table.component';
 import { EarningSourceComponent } from '@shared/components/earning-source/earning-source.component';
 import { TableCardComponent } from '@shared/components/table-card/table-card.component';
-import { AllemployeesComponent } from "app/admin/employees/allEmployees/allemployees.component";
-import { AllHolidayComponent } from "app/admin/holidays/all-holidays/all-holidays.component";
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
+import { AllHolidayComponent } from "app/admin/autorites/all-autorites/all-holidays.component";
 import { Router } from '@angular/router';
+import { AllemployeesComponent } from 'app/admin/citoyens/allCitoyens/allemployees.component';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -69,22 +69,18 @@ export type ChartOptions = {
     MatIconModule,
     NgScrollbar,
     InfoBox1Component,
-    RecentCommentsComponent,
-    ProgressTableComponent,
-    EarningSourceComponent,
     TableCardComponent,
-    AllemployeesComponent,
-    AllHolidayComponent
+    
 ]
 })
 export class Dashboard2Component implements OnInit {
   public lineChartOptions!: Partial<ChartOptions>;
   public pieChartOptions!: Partial<ChartOptions>;
 
-  transactions:number=0
-  apis:number=0
-  plateformes:number=0
-  paiements:number=0
+  citoyens:number=0
+  utilisateurs:number=0
+  autorites:number=0
+  eservices:number=0
   //  color: ["#3FA7DC", "#F6A025", "#9BC311"],
   constructor( public employeesService: EmployeesService,    private router: Router,
 
@@ -173,7 +169,7 @@ export class Dashboard2Component implements OnInit {
     };
   }
   viewTransaction(){
-    this.router.navigate(['/admin/holidays/all-holidays'])
+    this.router.navigate(['/admin/autorites/all-autorites'])
 
   }
 
@@ -195,10 +191,10 @@ export class Dashboard2Component implements OnInit {
         next: (data:any) => {
           
          console.log(data)
-         this.plateformes=data.totalPlateformes
-         this.transactions=data.totalTransactions
-         this.apis=data.totalApis
-         this.paiements=data.totalPayouts
+         this.citoyens=data.personnesCount
+         this.utilisateurs=data.usersCount
+         this.autorites=data.autoritesCount
+         this.eservices=data.eservicesCount
          
         
         },

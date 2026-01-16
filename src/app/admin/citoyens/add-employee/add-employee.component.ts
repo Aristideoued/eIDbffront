@@ -19,8 +19,8 @@ import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.co
 import { DepartmentService } from 'app/admin/departments/all-departments/department.service';
 import { Department } from 'app/admin/departments/all-departments/department.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeesService } from '../allEmployees/employees.service';
 import { Router } from '@angular/router';
+import { EmployeesService } from '../allCitoyens/employees.service';
 @Component({
     selector: 'app-add-employee',
     templateUrl: './add-employee.component.html',

@@ -10,9 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute } from '@angular/router';
-import { EmployeesService } from '../allEmployees/employees.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { environment } from 'environments/environment.development';
+import { EmployeesService } from '../allCitoyens/employees.service';
 
 @Component({
   selector: 'app-documents',
@@ -30,37 +30,30 @@ import { environment } from 'environments/environment.development';
         MatChipsModule,
         CommonModule
     ],
-  templateUrl: './identity.component.html',
-  styleUrl: './identity.component.scss'
+  templateUrl: './documents.component.html',
+  styleUrl: './documents.component.scss'
 })
-export class IdentityComponent {
+export class DocumentsComponent {
 
 
   documents :any=[];
   nomComplet:string=''
-    iu:string=''
-    data:any
-
   defaultPhoto = 'assets/images/bf.png'; // ton image par défaut
   photoBase:string=environment.apiUrl+"documents/photo/"
-
-    photoUrl:string=environment.apiUrl+"personnes/photo/"
-
   constructor(private route: ActivatedRoute,    
     public employeesService: EmployeesService,
   ) {}
 
 ngOnInit(): void {
-  const token = this.route.snapshot.paramMap.get('token');
-      console.log('Token reçu :', token);
+  const id = this.route.snapshot.paramMap.get('id');
+  
 
-
-  if (token) {
+  if (id) {
     // mode édition
 
-    this.loadIdentity(token)
-    //this.loadDocument(+id);
-   // console.log('Token reçu :', token);
+    this.loadCitoyen(+id)
+    this.loadDocument(+id);
+    console.log('ID reçu :', id);
   } else {
     // mode ajout
   }
@@ -70,15 +63,12 @@ onImageError(event: Event) {
   imgElement.src = this.defaultPhoto;
 }
 
-loadIdentity(token:string){
-   this.employeesService.getCitoyenIdentity(token).subscribe({
+loadDocument(id:number){
+   this.employeesService.getCitoyenDocument(id).subscribe({
         next: (data:any) => {
           
           console.log(data)
-        this.documents=data.documentsValides
-        this.data=data
-         this.nomComplet=data['nom']+" "+data['prenom']
-         this.iu=data.iu
+          this.documents=data
         },
         error: (err) => console.error(err),
       });

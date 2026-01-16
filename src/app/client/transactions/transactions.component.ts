@@ -32,14 +32,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { Transaction } from 'app/admin/holidays/all-holidays/transaction.model';
-import { HolidayService } from 'app/admin/holidays/all-holidays/all-holidays.service';
-import { AllHolidaysDeleteComponent } from 'app/admin/holidays/all-holidays/dialog/delete/delete.component';
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
-import { Personne } from 'app/admin/employees/allEmployees/employees.model';
+import { Transaction } from 'app/admin/autorites/all-autorites/transaction.model';
+import { HolidayService } from 'app/admin/autorites/all-autorites/all-holidays.service';
+import { AllHolidaysDeleteComponent } from 'app/admin/autorites/all-autorites/dialog/delete/delete.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Authorite } from 'app/admin/holidays/all-holidays/all-holidays.model';
-import { AuthoritesFormComponent } from 'app/admin/holidays/all-holidays/dialog/form-dialog/form-dialog.component';
+import { Authorite } from 'app/admin/autorites/all-autorites/all-holidays.model';
+import { AuthoritesFormComponent } from 'app/admin/autorites/all-autorites/dialog/form-dialog/form-dialog.component';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 @Component({
   selector: 'app-transactions',
     animations: [rowsAnimation],

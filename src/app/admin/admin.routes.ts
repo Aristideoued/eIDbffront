@@ -14,9 +14,9 @@ export const ADMIN_ROUTE: Route[] = [
       import('./projects/projects.routes').then((m) => m.PROJECT_ROUTE),
   },
   {
-    path: 'employees',
+    path: 'citoyens',
     loadChildren: () =>
-      import('./employees/employees.routes').then(
+      import('./citoyens/employees.routes').then(
         (m) => m.ADMIN_EMPLOYEE_ROUTE
       ),
   },
@@ -40,6 +40,11 @@ export const ADMIN_ROUTE: Route[] = [
       import('./clients/clients.routes').then((m) => m.ADMIN_CLIENT_ROUTE),
   },
   {
+    path: 'eservices',
+    loadChildren: () =>
+      import('./eservices/eservices.routes').then((m) => m.ESERVICES_ROUTE),
+  },
+  {
     path: 'leaves',
     loadChildren: () =>
       import('./leaves/leaves.routes').then((m) => m.LEAVE_ROUTE),
@@ -50,9 +55,9 @@ export const ADMIN_ROUTE: Route[] = [
       import('./accounts/accounts.routes').then((m) => m.ACCOUNT_ROUTE),
   },
   {
-    path: 'holidays',
+    path: 'autorites',
     loadChildren: () =>
-      import('./holidays/holidays.routes').then((m) => m.HOLIDAY_ROUTE),
+      import('./autorites/holidays.routes').then((m) => m.HOLIDAY_ROUTE),
   },
   {
     path: 'attendance',

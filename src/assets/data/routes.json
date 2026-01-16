@@ -28,33 +28,7 @@
       ]
     },
    
-    {
-      "path": "",
-      "title": "MENUITEMS.EMPLOYEES.TEXT",
-      "iconType": "feather",
-      "icon": "users",
-      "class": "ml-menu",
-      "groupTitle": false,
-      "badge": "",
-      "badgeClass": "",
-      "role": ["Admin"],
-      "submenu": [
-        
-        {
-          "path": "/admin/employees/allEmployees",
-          "title": "MENUITEMS.EMPLOYEES.LIST.ALL-EMPLOYEE",
-          "iconType": "",
-          "icon": "users",
-          "class": "ml-menu",
-          "groupTitle": false,
-          "badge": "",
-          "badgeClass": "",
-          "role": [""],
-          "submenu": []
-        }
-      
-      ]
-    },
+ 
      {
       "path": "",
       "title": "MENUITEMS.ADMIN.TEXT",
@@ -93,7 +67,7 @@
       "role": ["Admin"],
       "submenu": [
         {
-          "path": "/admin/employees/allEmployees",
+          "path": "/admin/citoyens/allCitoyens",
           "title": "MENUITEMS.EMPLOYEES.LIST.ALL-EMPLOYEE",
           "iconType": "",
           "icon": "",
@@ -134,8 +108,33 @@
       "role": ["Admin"],
       "submenu": [
         {
-          "path": "/admin/holidays/all-holidays",
+          "path": "/admin/autorites/all-autorites",
           "title": "MENUITEMS.HOLIDAYS.LIST.ALL-HOLIDAYS",
+          "iconType": "",
+          "icon": "",
+          "class": "ml-menu",
+          "groupTitle": false,
+          "badge": "",
+          "badgeClass": "",
+          "role": ["Admin"],
+          "submenu": []
+        }
+      ]
+    },
+       {
+      "path": "",
+      "title": "Eservices",
+      "iconType": "feather",
+      "icon": "monitor",
+      "class": "menu-toggle",
+      "groupTitle": false,
+      "badge": "",
+      "badgeClass": "",
+      "role": ["Admin"],
+      "submenu": [
+        {
+          "path": "/admin/eservices/all-eservices",
+          "title": "E-services disponibles",
           "iconType": "",
           "icon": "",
           "class": "ml-menu",

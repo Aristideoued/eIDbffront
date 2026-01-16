@@ -21,8 +21,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
 import { CommonModule } from '@angular/common';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 
 export interface DialogData {
   id: number;

@@ -4,8 +4,6 @@ import { AuthGuard } from '@core/guard/auth.guard';
 import { AuthLayoutComponent } from './layout/app-layout/auth-layout/auth-layout.component';
 import { Page404Component } from './authentication/page404/page404.component';
 import { Role } from '@core';
-import { DocumentsComponent } from './admin/employees/documents/documents.component';
-import { IdentityComponent } from './admin/employees/identity/identity.component';
 
 export const APP_ROUTE: Route[] = [
    

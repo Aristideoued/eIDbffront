@@ -22,7 +22,6 @@ import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.co
 import { ProjectService } from '../all-projects/core/project.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ClientsService } from 'app/admin/clients/all-clients/clients.service';
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
 import { DepartmentService } from 'app/admin/departments/all-departments/department.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -30,6 +29,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter } from '@angular/material/core';
 import { MY_DATE_FORMATS } from '../../../../../dateconfig';
 import { Router } from '@angular/router';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 
 
 

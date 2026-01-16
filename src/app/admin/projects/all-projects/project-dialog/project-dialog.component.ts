@@ -35,10 +35,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { FileUploadComponent } from '@shared/components/file-upload/file-upload.component';
 import { CommonModule } from '@angular/common';
 import { ClientsService } from 'app/admin/clients/all-clients/clients.service';
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
 import { DepartmentService } from 'app/admin/departments/all-departments/department.service';
 import { Router } from '@angular/router';
 import moment from 'moment';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 
 export interface DialogData {
   id: number;

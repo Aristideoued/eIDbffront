@@ -39,7 +39,7 @@ import { EmployeeSalary } from 'app/admin/payroll/employee-salary/employee-salar
 import { EmployeeSalaryFormComponent } from 'app/admin/payroll/employee-salary/dialogs/form-dialog/form-dialog.component';
 import { EmployeeSalaryDeleteComponent } from 'app/admin/payroll/employee-salary/dialogs/delete/delete.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 @Component({
   selector: 'app-payouts',
     animations: [rowsAnimation],

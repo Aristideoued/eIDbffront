@@ -18,7 +18,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { EmployeesService } from 'app/admin/employees/allEmployees/employees.service';
 import { DepartmentService } from 'app/admin/departments/all-departments/department.service';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -27,6 +26,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRadioModule } from '@angular/material/radio';
 import { FileUploadComponent } from '@shared/components/file-upload/file-upload.component';
 import { NgxEditorModule } from 'ngx-editor';
+import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
 
 export interface DialogData {
   id: number;

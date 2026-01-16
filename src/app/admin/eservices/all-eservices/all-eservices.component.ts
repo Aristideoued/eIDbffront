@@ -5,12 +5,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MyProjectsService } from './my-projects.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MyProjects } from './my-projects.model';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -18,13 +16,11 @@ import {
 } from '@angular/material/snack-bar';
 import { MatMenuTrigger, MatMenuModule } from '@angular/material/menu';
 import { Subject } from 'rxjs';
-import { MyProjectsFormComponent } from './dialogs/form-dialog/form-dialog.component';
-import { MyProjectsDeleteComponent } from './dialogs/delete/delete.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { rowsAnimation } from '@shared';
 import { Direction } from '@angular/cdk/bidi';
 import { TableExportUtil } from '@shared';
-import { formatDate, NgClass, DatePipe } from '@angular/common';
+import { formatDate, NgClass, DatePipe, CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRippleModule } from '@angular/material/core';
 import { FeatherIconsComponent } from '@shared/components/feather-icons/feather-icons.component';
@@ -36,13 +32,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BreadcrumbComponent } from '@shared/components/breadcrumb/breadcrumb.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
-import { Personne } from 'app/admin/citoyens/allCitoyens/employees.model';
-import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.service';
+import { Eservice } from './all-eservices.model';
+import { EserviceService } from './all-eservices.service';
+import { EserviceFormComponent } from './dialog/form-dialog/form-dialog.component';
+import { EserviceDeleteComponent } from './dialog/delete/delete.component';
 
 @Component({
-    selector: 'app-myprojects',
-    templateUrl: './my-projects.component.html',
-    styleUrls: ['./my-projects.component.scss'],
+    selector: 'app-allholiday',
+    templateUrl: './all-eservices.component.html',
+    styleUrls: ['./all-eservices.component.scss'],
     animations: [rowsAnimation],
     imports: [
         BreadcrumbComponent,
@@ -53,6 +51,7 @@ import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.servi
         MatTableModule,
         MatSortModule,
         NgClass,
+        CommonModule,
         MatCheckboxModule,
         FeatherIconsComponent,
         MatRippleModule,
@@ -60,38 +59,24 @@ import { EmployeesService } from 'app/admin/citoyens/allCitoyens/employees.servi
         MatProgressSpinnerModule,
         MatMenuModule,
         MatPaginatorModule,
-        DatePipe,
     ]
 })
-export class MyProjectsComponent implements OnInit, OnDestroy {
- columnDefinitions = [
+export class EserviceComponent implements OnInit, OnDestroy {
+  columnDefinitions = [
     { def: 'select', label: 'Checkbox', type: 'check', visible: true },
-    { def: 'id', label: 'ID', type: 'text', visible: false },
-    { def: 'userId', label: 'USERID', type: 'text', visible: false },
-        { def: 'token', label: 'Token', type: 'text', visible: false },
-
-    { def: 'nom', label: 'Nom', type: 'text', visible: true },
-    { def: 'totalMontantTransactions', label: 'Total transactions (HT)', type: 'text', visible: true },
-    { def: 'totalMontantTransactionsTTC', label: 'Total transactions (TTC)', type: 'text', visible: true },
-    { def: 'totalMontantPayouts', label: 'Total paiement (HT)', type: 'text', visible: true },
-    
-    { def: 'totalMontantPayoutsTTC', label: 'Total paiement (TTC)', type: 'text', visible: true },
-
-
-
-    { def: 'url', label: 'Url', type: 'url', visible: true },
-        { def: 'callbackUrl', label: 'Url de retour', type: 'url', visible: true },
-
-     { def: 'commissionAgregateur', label: 'CommissionAgregateur', type: 'name', visible: true },
-   // { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
+    { label: 'ID', def: 'id', type: 'number', visible: false },
+    { label: 'Libellé', def: 'libelle', type: 'text', visible: true },
+    { label: 'Url', def: 'url', type: 'text', visible: true },
+    { label: 'Description', def: 'description', type: 'text', visible: true },
+   
+   { def: 'actions', label: 'Actions', type: 'actionBtn', visible: true },
   ];
 
-   avatar="assets/images/avatar.jpg"
-   dataSource = new MatTableDataSource<Personne>([]);
-   selection = new SelectionModel<Personne>(true, []);
-   contextMenuPosition = { x: '0px', y: '0px' };
-   isLoading = true;
-   private destroy$ = new Subject<void>();
+  dataSource = new MatTableDataSource<Eservice>([]);
+  selection = new SelectionModel<Eservice>(true, []);
+  contextMenuPosition = { x: '0px', y: '0px' };
+  isLoading = true;
+  private destroy$ = new Subject<void>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -101,9 +86,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
   constructor(
     public httpClient: HttpClient,
     public dialog: MatDialog,
-    public myProjectsService: MyProjectsService,
-    private snackBar: MatSnackBar,
-     public employeesService: EmployeesService,
+    public eserviceService: EserviceService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -124,21 +108,47 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
       .filter((cd) => cd.visible)
       .map((cd) => cd.def);
   }
+formatCellValue(row: any, def: string): string {
+  if (def === 'date' && row['date']) {
+    return new Date(row['date']).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
 
-   loadData() {
-     this.employeesService.getPersonneByUserId().subscribe({
-       next: (data:any) => {
-         this.dataSource.data = data;
-         this.isLoading = false;
-         this.refreshTable();
-         this.dataSource.filterPredicate = (data: Personne, filter: string) => {
-           const searchStr = `${data.id} ${data.email} ${data.nom} ${data.prenom} ${data.telephone} ${data.nationalite} ${data.adresse}`.toLowerCase();
-           return searchStr.includes(filter);
-         };
-       },
-       error: (err) => console.error(err),
-     });
-   }
+  if (def === 'heure' && row['heure']) {
+    return row['heure'].substring(0, 8);
+  }
+
+  return row[def];
+}
+
+
+  loadData() {
+    this.eserviceService.getAllEservices().subscribe({
+      next: (data:any) => {
+        this.dataSource.data = data;
+        this.isLoading = false;
+        this.refreshTable();
+        console.log(this.dataSource.data)
+     this.dataSource.filterPredicate = (data: Eservice, filter: string): boolean => {
+      const searchText = filter.toLowerCase();
+      return (
+        (data.libelle?.toLowerCase().includes(searchText) ?? false) ||
+        (data.description?.toLowerCase().includes(searchText) ?? false) ||
+        (data.url?.toString().toLowerCase().includes(searchText) ?? false) 
+        
+      );
+    };
+
+
+
+      },
+      error: (err) => console.error(err),
+    });
+  }
+
   private refreshTable() {
     this.paginator.pageIndex = 0;
     this.dataSource.paginator = this.paginator;
@@ -156,21 +166,22 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     this.openDialog('add');
   }
 
-  editCall(row: MyProjects) {
+  editCall(row: Eservice) {
     this.openDialog('edit', row);
   }
 
-  openDialog(action: 'add' | 'edit', data?: MyProjects) {
+  openDialog(action: 'add' | 'edit', data?: Eservice) {
+    //console.log("La data dans dialogue====> ",data)
     let varDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       varDirection = 'rtl';
     } else {
       varDirection = 'ltr';
     }
-    const dialogRef = this.dialog.open(MyProjectsFormComponent, {
+    const dialogRef = this.dialog.open(EserviceFormComponent, {
       width: '60vw',
       maxWidth: '100vw',
-      data: { myProjects: data, action },
+      data: { authorite: data, action },
       direction: varDirection,
       autoFocus: false,
     });
@@ -182,7 +193,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         } else {
           this.updateRecord(result);
         }
-        this.refreshTable();
+        this.loadData();
         this.showNotification(
           action === 'add' ? 'snackbar-success' : 'black',
           `${action === 'add' ? 'Add' : 'Edit'} Record Successfully...!!!`,
@@ -193,7 +204,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     });
   }
 
-  private updateRecord(updatedRecord: Personne) {
+  private updateRecord(updatedRecord: Eservice) {
     const index = this.dataSource.data.findIndex(
       (record) => record.id === updatedRecord.id
     );
@@ -203,8 +214,8 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
     }
   }
 
-  deleteItem(row: Personne) {
-    const dialogRef = this.dialog.open(MyProjectsDeleteComponent, {
+  deleteItem(row: Eservice) {
+    const dialogRef = this.dialog.open(EserviceDeleteComponent, {
       data: row,
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -212,7 +223,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
         this.dataSource.data = this.dataSource.data.filter(
           (record) => record.id !== row.id
         );
-        this.refreshTable();
+        this.loadData();
         this.showNotification(
           'snackbar-danger',
           'Delete Record Successfully...!!!',
@@ -238,22 +249,17 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
   }
 
   exportExcel() {
-    /*const exportData = this.dataSource.filteredData.map((x) => ({
+    const exportData = this.dataSource.filteredData.map((x) => ({
       ID: x.id,
-      Url: x.url,
-      Nom: x.nom,
-      Admin: x.userNomPrenom,
-      'Téléphone Admin': x.userTelephone,
-      "Email admin": x.userMail,
-      CommissionAgreagateur: x.commissionAgregateur,
-      "Total transactions(TTC)":x.totalMontantTransactionsTTC,
-      "Total transactions(HT)":x.totalMontantTransactions,
-      "Total paiements(TTC)":x.totalMontantPayoutsTTC,
-      "Total paiements(HT)":x.totalMontantPayouts
+       'Libelle': x.libelle,
+      'Desecription': x.description,
+      Url: x.url
+       
       
+     
     }));
 
-    TableExportUtil.exportToExcel(exportData, 'projects_export');*/
+    TableExportUtil.exportToExcel(exportData, 'eservice_export');
   }
 
   isAllSelected() {
@@ -279,7 +285,7 @@ export class MyProjectsComponent implements OnInit, OnDestroy {
       'center'
     );
   }
-  onContextMenu(event: MouseEvent, item: MyProjects) {
+  onContextMenu(event: MouseEvent, item: Eservice) {
     event.preventDefault();
     this.contextMenuPosition = {
       x: `${event.clientX}px`,
