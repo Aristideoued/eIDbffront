@@ -126,7 +126,7 @@ export class AllemployeesComponent implements OnInit, OnDestroy {
   }
 
   getDocument(id:number){
-    this.router.navigate(['/admin/employees/documents', id]);
+    this.router.navigate(['/admin/citoyens/documents', id]);
   }
 
   loadData() {

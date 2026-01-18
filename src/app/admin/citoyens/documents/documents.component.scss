@@ -4,9 +4,25 @@
   padding: 24px;
 }
 
+.add-button {
+  position: sticky;
+  top: 16px;
+  z-index: 10;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
+}
+
 .header {
   max-width: 1400px;
   margin-top: 50px;
+   display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   h1 {
     font-size: 32px;

@@ -46,6 +46,24 @@ export class EmployeesService {
     return this.httpClient.get<Personne[]>(environment.apiUrl + "personnes/all", { headers });
   }
 
+   getTypeDoc(): Observable<any[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+    return this.httpClient.get<any[]>(environment.apiUrl + "typedocuments/all", { headers });
+  }
+
+   getAutorite(): Observable<any[]> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+    return this.httpClient.get<any[]>(environment.apiUrl + "autorites/all", { headers });
+  }
+
 
    getCitoyenDocument(id:number): Observable<any[]> {
     const headers = new HttpHeaders({

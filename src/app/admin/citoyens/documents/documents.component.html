@@ -1,6 +1,15 @@
 <div class="container">
   <div class="header">
     <h1>Documents d'Identité de {{nomComplet}}</h1>
+
+    <button
+    mat-fab
+    color="primary"
+    class="add-button"
+    aria-label="Ajouter un document"
+    (click)="onAddDocument()">
+    <mat-icon>add</mat-icon>
+  </button>
   </div>
 
   <div class="documents-grid">
@@ -148,6 +157,38 @@
          <div *ngIf="doc.etat=='INVALIDE'" class="status-badge">
           <mat-chip class="valid-chip">Invalide</mat-chip>
         </div>
+        <mat-divider class="section-divider"></mat-divider>
+
+      <div class="card-actions">
+      <button
+      style="background-color: blue; color: white;"
+        mat-icon-button
+        color="primary"
+        matTooltip="Modifier le document"
+        (click)="onEditDocument(doc)">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+        <button
+        style="background-color: gray; color: white;"
+          mat-icon-button
+          color="accent"
+          matTooltip="Ajouter une photo"
+          (click)="onAddPhoto(doc)">
+          <mat-icon>photo_camera</mat-icon>
+        </button>
+
+        <button
+        style="background-color: red; color: white;"
+          mat-icon-button
+          color="warn"
+          matTooltip="Supprimer le document"
+          (click)="onDeleteDocument(doc)">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+
+      </div>
+
       </mat-card-content>
     </mat-card>
   </div>
