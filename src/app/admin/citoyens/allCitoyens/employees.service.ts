@@ -5,6 +5,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Personne } from './employees.model';
 import { environment } from 'environments/environment.development';
 import { AuthService } from '@core/service/auth.service';
+import { reference } from '@popperjs/core';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,7 @@ export class EmployeesService {
     return this.httpClient.get<Personne[]>(environment.apiUrl + "personnes/all", { headers });
   }
 
-   getTypeDoc(): Observable<any[]> {
+  getTypeDoc(): Observable<any[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + this.authService.currentUserValue.token
@@ -55,7 +56,7 @@ export class EmployeesService {
     return this.httpClient.get<any[]>(environment.apiUrl + "typedocuments/all", { headers });
   }
 
-   getAutorite(): Observable<any[]> {
+  getAutorite(): Observable<any[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + this.authService.currentUserValue.token
@@ -65,31 +66,31 @@ export class EmployeesService {
   }
 
 
-   getCitoyenDocument(id:number): Observable<any[]> {
+  getCitoyenDocument(id: number): Observable<any[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<any[]>(environment.apiUrl + "documents/personnes/"+id+"/documents", { headers });
+    return this.httpClient.get<any[]>(environment.apiUrl + "documents/personnes/" + id + "/documents", { headers });
   }
 
 
-  getCitoyenIdentity(token:string): Observable<any[]> {
+  getCitoyenIdentity(token: string): Observable<any[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<any[]>(environment.apiUrl + "qrcodes/verify?token="+token, { headers });
+    return this.httpClient.get<any[]>(environment.apiUrl + "qrcodes/verify?token=" + token, { headers });
   }
-   getCitoyenById(id:number): Observable<any[]> {
+  getCitoyenById(id: number): Observable<any[]> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': "Bearer " + this.authService.currentUserValue.token
     });
 
-    return this.httpClient.get<any[]>(environment.apiUrl + "personnes/getById/"+id, { headers });
+    return this.httpClient.get<any[]>(environment.apiUrl + "personnes/getById/" + id, { headers });
   }
   getStat(): Observable<any> {
     const headers = new HttpHeaders({
@@ -121,13 +122,24 @@ export class EmployeesService {
 
 
 
-  uploadPhoto(iu:any,formData:any){
-      const headers = new HttpHeaders({
-    
+  uploadPhoto(iu: any, formData: any) {
+    const headers = new HttpHeaders({
+
       'Authorization': "Bearer " + this.authService.currentUserValue.token
     });
 
-      return this.httpClient.post<any>(environment.apiUrl + "personnes/" + iu+"/photo", formData, { headers })
+    return this.httpClient.post<any>(environment.apiUrl + "personnes/" + iu + "/photo", formData, { headers })
+
+
+  }
+
+    uploadDocumentPhoto(id: any, formData: any) {
+    const headers = new HttpHeaders({
+
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+    return this.httpClient.post<any>(environment.apiUrl + "documents/upload/" + id, formData, { headers })
 
 
   }
@@ -159,7 +171,7 @@ export class EmployeesService {
     };
 
     console.log("Personne envoyé============> ", PersonneData)
-        console.log("Token envoyé============> ", this.authService.currentUserValue.token)
+    console.log("Token envoyé============> ", this.authService.currentUserValue.token)
 
 
     return this.httpClient
@@ -186,6 +198,93 @@ export class EmployeesService {
       );
   }
 
+
+
+  updateDocument(document: any,id:any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+    const PersonneData = {
+
+      numero: { nip: document.numero, reference: document.reference },
+      dateDelivrance: document.dateDelivrance,
+      dateExpiration: document.dateExpiration,
+
+      lieuEtablissement: document.lieuEtablissement,
+
+      contenu: document.contenu,
+
+      typeDocument: { id: +document.typeDocument },
+      autorite: { id: +document.autorite },
+     
+
+
+      taille: +document.taille
+
+
+
+
+
+
+
+    };
+
+    console.log("Personne envoyé============> ", PersonneData)
+
+    return this.httpClient
+      .put<any>(environment.apiUrl + "documents/update/"+id, JSON.stringify(PersonneData), { headers })
+      .pipe(
+        map((response) => ({
+          id: response.id
+        })),
+        catchError(this.handleError)
+      );
+  }
+
+  addDocument(document: any, personneId: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+    const PersonneData = {
+
+      numero: { nip: document.numero, reference: document.reference },
+      dateDelivrance: document.dateDelivrance,
+      dateExpiration: document.dateExpiration,
+
+      lieuEtablissement: document.lieuEtablissement,
+
+      contenu: document.contenu,
+
+      typeDocument: { id: +document.typeDocument },
+      autorite: { id: +document.autorite },
+      personneId: personneId,
+
+
+      taille: +document.taille
+
+
+
+
+
+
+
+    };
+
+    console.log("Personne envoyé============> ", PersonneData)
+
+    return this.httpClient
+      .post<any>(environment.apiUrl + "documents/creer", JSON.stringify(PersonneData), { headers })
+      .pipe(
+        map((response) => ({
+          id: response.id
+        })),
+        catchError(this.handleError)
+      );
+  }
 
   addPersonne(personne: Personne): Observable<Personne> {
     const headers = new HttpHeaders({
@@ -241,6 +340,26 @@ export class EmployeesService {
   }
 
 
+
+    deleteDocument(id: string): Observable<Personne> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer " + this.authService.currentUserValue.token
+    });
+
+
+    return this.httpClient
+      .delete<any>(environment.apiUrl + "documents/delete/" + id, { headers })
+      .pipe(
+        map((response) => new Personne({
+          id: response.id
+
+
+
+        })),
+        catchError(this.handleError)
+      );
+  }
   deletePersonne(id: string): Observable<Personne> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

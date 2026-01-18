@@ -85,6 +85,13 @@
               <span class="info-value">{{ doc.personne.sexe }}</span>
             </div>
           </div>
+          <div class="info-row" *ngIf="doc.taille">
+              <mat-icon class="info-icon">rule</mat-icon>
+              <div class="info-text">
+                <span class="info-label">Taille</span>
+                <span class="info-value">{{ doc.taille  }} cm</span>
+              </div>
+            </div>
 
 
             <div class="info-row">

@@ -44,11 +44,12 @@ export interface DialogData {
 })
 export class DocumentFormDialogueComponent {
 
-   action: string;
+  action: string;
   dialogTitle: string;
   documentForm: UntypedFormGroup;
-  document: Documents;
+  document: any;
   autorites: any;
+  personneId:any
   typedocuments: any;
 
 
@@ -61,6 +62,7 @@ export class DocumentFormDialogueComponent {
   ) {
     // Set action and department data
     this.action = data.action;
+    this.personneId=data.id
     this.dialogTitle =
       this.action === 'edit'
         ? data.document.libelle
@@ -76,6 +78,8 @@ export class DocumentFormDialogueComponent {
   }
 
 ngOnInit(){
+      console.log("data reçu=====> ",this.personneId)
+
   this.loadTypeDocumentData()
   this.loadAutoriteData()
 }
@@ -103,15 +107,15 @@ ngOnInit(){
   createDepartmentForm(): UntypedFormGroup {
     return this.fb.group({
       id: [this.document.id],
-      autorite:[this.document.autorite, [Validators.required]] ,
-      typeDocument: [this.document.typeDocument, [Validators.required]] ,
+      autorite:[this.document.autorite.id, [Validators.required]] ,
+      typeDocument: [this.document.typeDocument.id, [Validators.required]] ,
       dateDelivrance:[this.document.dateDelivrance, [Validators.required]]  ,
       dateExpiration:[this.document.dateExpiration]  ,
-      numero: [this.document.numero] ,
-      reference: [this.document.reference, [Validators.required]] ,
+      numero: [this.document.numero.nip] ,
+      reference: [this.document.numero.reference, [Validators.required]] ,
       lieuEtablissement:[this.document.lieuEtablissement]  ,
       contenu:[this.document.contenu]  ,
-      taille: [this.document.autorite] 
+      taille: [this.document.taille] 
         
     
     });
@@ -150,7 +154,7 @@ ngOnInit(){
       const formData = this.documentForm.getRawValue();
       console.log("form data==",formData)
       if (this.action === 'edit') {
-        this.departmentService.updateDepartment(formData).subscribe({
+        this.employeService.updateDocument(formData,this.document.id).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },
@@ -159,7 +163,7 @@ ngOnInit(){
           },
         });
       } else {
-        this.departmentService.addDepartment(formData).subscribe({
+        this.employeService.addDocument(formData,this.personneId).subscribe({
           next: (response) => {
             this.dialogRef.close(response);
           },

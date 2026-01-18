@@ -17,6 +17,8 @@ import { Direction } from '@angular/cdk/bidi';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentFormDialogueComponent } from '../dialogue/form-dialogue/form-dialogue.component';
 import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { DocumentDeleteDialogueComponent } from '../dialogue/delete-dialogue/delete-dialogue.component';
+import { DocumentPhotoDialogueComponent } from './document-photo-dialogue/document-photo-dialogue.component';
 
 @Component({
   selector: 'app-documents',
@@ -68,17 +70,20 @@ ngOnInit(): void {
 }
 
 onAddDocument() {
-  this.openDialog("add",this.id)
+  this.openDialog("add",null,this.id)
 }
 
 onEditDocument(doc: any) {
-  // ex: ouvrir un dialog avec les données
-  // this.dialog.open(EditDocumentDialogComponent, { data: doc });
+  console.log("le doc reçu=====> ",doc)
+
+    this.openDialog("edit",doc,null)
+
+
 }
 
 
 
- openDialog(action: 'add' | 'edit', data?: any) {
+ openDialog(action: 'add' | 'edit', data?: any,id?:any) {
     let varDirection: Direction;
     if (localStorage.getItem('isRtl') === 'true') {
       varDirection = 'rtl';
@@ -88,7 +93,7 @@ onEditDocument(doc: any) {
     const dialogRef = this.dialog.open(DocumentFormDialogueComponent, {
       width: '60vw',
       maxWidth: '100vw',
-      data: { employees: data, action },
+      data: { document: data, action,id:id },
       direction: varDirection,
       autoFocus: false,
     });
@@ -123,14 +128,44 @@ onEditDocument(doc: any) {
       panelClass: colorName,
     });
   }
-onDeleteDocument(doc:any){
 
+
+  onAddPhoto(row: any) {
+  const dialogRef = this.dialog.open(DocumentPhotoDialogueComponent, {
+    width: '400px',
+    data: { id: row.id}
+  });
+
+  dialogRef.afterClosed().subscribe((newPhotoUrl: string) => {
+     this.ngOnInit()
+    if (newPhotoUrl) {
+      // Met à jour la photo dans le formulaire
+     // this.personnes.photo = newPhotoUrl;
+     this.ngOnInit()
+    }
+  });
 }
 
-onAddPhoto(doc: any) {
-  // ex: ouvrir dialog upload photo
-  // this.dialog.open(UploadPhotoDialogComponent, { data: doc });
-}
+ onDeleteDocument(row: any) {
+    const dialogRef = this.dialog.open(DocumentDeleteDialogueComponent, {
+      data: row,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+       this.ngOnInit();
+      if (result) {
+       
+        this.ngOnInit();
+        this.showNotification(
+          'snackbar-danger',
+          'Suppression effectuée avec succès !',
+          'bottom',
+          'center'
+        );
+      }
+    });
+  }
+
+
 
 onImageError(event: Event) {
   const imgElement = event.target as HTMLImageElement;
